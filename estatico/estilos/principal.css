@@ -1,0 +1,16 @@
+body{
+    font-family: Trebuchet, Helvetica, sans-serif;
+    background-color: #FFE7CA;
+}
+
+a { 
+    color: #FF5E00;
+    text-decoration:none;
+}
+
+div.dica {
+    color:#8A8A8A;
+    font-size: 9pt;
+    margin-left:10px;
+    margin-right:10px;
+}

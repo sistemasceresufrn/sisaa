@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="/estatico/estilos/alerta.css">
+{% endblock %}
+
+{% block corpo %}
+<h1>Aviso</h1>
+
+<p>{{mensagem}}</p>
+
+Tem certeza?
+<form action='{{uri_sim}}' method='post'>
+    <input type='submit' value='Confirmar'>
+    <a href='{{uri_nao}}'>Voltar</a>
+</form>
+
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'cad_gt.html' %}
+
+{% block titulo %}
+<h1>Alterar grupo de trabalho {{value_sigla}}</h1>
+{% endblock %}
+
+{% block sigla %}
+Sigla: {{value_sigla}}
+<!-- Essa input facilita a programação. Não remova. -->
+<input type='hidden' name='sigla' value='{{value_sigla}}'>
+{% endblock %}
+
+{% block edital %}
+<a href='/down/{{edital_key}}'>Edital atual</a> (escolha outro arquivo para substituir)
+<div><input type='file' name='file' accept='pdf' ></div>
+{% endblock %}
+
+{% block campos_extra %}
+Escolha um estado:
+<div>
+    <label>
+        <input type='radio' name='estado' value='{{travado}}'
+            {{trav_checked}}> travado
+        <div class='dica'>
+            Trava o grupo de trabalho para não aceitar submissões nem avaliações.
+        </div>
+    </label>
+</div>
+
+<div>
+    <label>
+        <input type='radio' name='estado' value='{{aceitando_submissoes}}' 
+            {{aceit_sub_checked}}> aceitando submissões
+        <div class='dica'>
+            Faz o grupo de trabalho aceitar submissões.
+        </div>
+    </label>
+</div>
+
+<div>
+    <label>
+        <input type='radio' name='estado' value='{{aceitando_avaliacoes}}'
+            {{aceit_ava_checked}}> aceitando avaliações
+    
+        <div class='dica'>
+            Faz o grupo de trabalho aceitar avaliações.
+        </div>
+    </label>
+</div>
+
+<div>
+    <label>
+        <input type='radio' name='estado' value='{{finalizado}}'
+            {{fin_checked}}> finalizado
+        <div class='dica'>
+            Encerra o grupo de trabalho.
+        </div>
+    </label>
+</div>
+{% endblock %}

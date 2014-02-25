@@ -1,0 +1,35 @@
+<!-- O autoescape serve para converter caracteres perigosos
+(como ") para o respectivo de escape html (como &quot). Para 
+desativar em uma parte da página, use autoescape false e para reativar,
+ use novamente autoescape true -->
+{% autoescape true %}
+<!DOCTYPE html>
+<html>
+    <head>
+        {% block head %}
+	        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            {% block css %}
+            <link rel="stylesheet" type="text/css" href="/estatico/estilos/principal.css">
+            {% endblock %}
+	        <title>SISAA</title>
+        {% endblock %}
+    </head>
+    <body>
+        {% block nav %}
+        {% endblock %}
+        
+    	{% block mensagens %}
+	   		<ul>
+		    	{% for m in msgs %}
+		    		<li>{{m}}</li>
+		    	{% endfor %}
+	    	</ul>
+    	{% endblock %}
+    	
+        {% block corpo %}
+
+        {% endblock %}
+    </body>
+</html>
+{% endautoescape %}
+

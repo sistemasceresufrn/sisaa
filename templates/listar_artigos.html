@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block corpo %}
+<h1>Meus artigos</h1>
+    {% for a in artigos %}
+        <div>
+            <a href='/art/{{a.key.urlsafe()}}'>
+                <b>{{a.titulo}}</b> ({{a.situacao}})
+            </a>
+        </div>
+        <!--<a href=''>Alterar</a> | <a href=''>Excluir</a>-->
+    {% endfor %}
+    <div>
+        <a href='/entrou'>Voltar para o início</a>
+    </div>
+    
+{% endblock %}

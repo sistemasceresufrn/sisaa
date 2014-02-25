@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block corpo %}
+<h1>SISAA - Sistema de Submissão e Avaliação de Artigos</h1>
+
+<form method="POST" action="/login">
+	<div>
+	    <label for="email">E-mail</label>
+		<input type="text" name="email" required autofocus>
+	</div>
+	<div>
+		<label for="senha">Senha</label>
+		<input type="password" name="senha" required>
+	</div>
+	<input type="submit">
+</form>
+
+{% endblock %}

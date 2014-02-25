@@ -1,0 +1,17 @@
+application: ciro-app-id
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /estatico
+  static_dir: estatico
+- url: /.*
+  script: sisaa.app
+
+libraries:
+- name: jinja2
+  version: latest
+- name: webapp2
+  version: latest

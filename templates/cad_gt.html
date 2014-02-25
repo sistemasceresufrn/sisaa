@@ -1,0 +1,78 @@
+<!-- Cadastro de grupos de trabalho -->
+{% extends 'base.html' %}
+
+{% block corpo %}
+
+{% block titulo %}
+<h1>Cadastrar grupo de trabalho</h1>
+{% endblock %}
+
+Preencha os campos abaixo e pressione o botão para criar um grupo de trabalho.
+<form id='form_gt' method="post" action="{{upload_url}}" enctype="multipart/form-data">
+	<div>
+        <label>
+            Nome <input type="text" value='{{value_nome}}' required name='nome'>
+        </label>
+    </div>
+	
+	<div>
+        {% block sigla %}
+        <label>
+            Sigla <input type="text" value='{{value_sigla}}' required name='sigla'>
+        </label>
+        {% endblock %}
+	</div>
+    
+    {% block edital %}
+    <div>
+        <label>
+            Edital <input type='file' name='file' accept='pdf' required>
+        </label>
+    </div>
+    {% endblock %}
+    
+	<div>
+        <label>
+            Data de início das submissões <input type="date" 
+                value='{{value_ini_sub}}' required name='ini_sub'>
+        </label>
+    </div>
+	
+	<div>
+        <label>
+            Data de fim das submissões <input type="date" 
+                value='{{value_fim_sub}}' required name='fim_sub'>
+        </label>
+    </div>
+	
+	<div>
+        <label>
+            Data de início das avaliações <input type="date"
+                value='{{value_ini_ava}}' required name='ini_ava'>
+        </label>
+    </div>
+	
+	<div>
+        <label>
+            Data de fim das avaliações <input type="date" value='{{value_fim_ava}}'
+                required name='fim_ava'>
+        </label>
+    </div>
+
+    <div>
+        E-mails dos avaliadores (digite um e-mail por linha)
+    </div>
+    <div>
+        <textarea required cols='40' rows='6' name='emails_ava'
+            >{{value_emails_ava}}</textarea>
+    </div>
+	
+    {% block campos_extra %}
+    {% endblock %}
+    
+	<div>
+        <input type="submit" value="Salvar grupo de trabalho">
+        <a href='/entrou'>Voltar para o início</a>
+    </div>
+</form>
+{% endblock %}

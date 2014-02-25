@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block corpo %}
+<h1>Cadastrar organizador</h1>
+
+<form method='post' action='/cad/org/salvar'>
+	<div>Nome <input type='text' required autofocus name='nome'></div>
+
+	<div>Email <input type='text' required name='email'></div>
+	
+	<input type='submit' value='Cadastrar'>
+</form>
+{% endblock %}

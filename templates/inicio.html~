@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block corpo %}
+<h1>Home</h1>
+
+<form method="POST" action="/auth/password" class="horizontal-form">
+		<label for="email" class="control-label">Email</label>
+		<div class="controls">
+			<input type="text" name="email" class="input-medium">
+		</div>
+		<label for="password" class="control-label">Password</label>
+		<div class="controls">
+			<input type="password" name="password" class="input-medium">
+		</div>
+		<button type="submit" class="btn">Login</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block corpo %}
+    <h1>Organizadores</h1>
+    {% for o in organizadores %}
+        <div>
+            {{o.nome}} - {{o.email}} <br>
+            <a href='/confirmar/del/org/{{o.email}}'>Excluir</a>
+        </div>
+    {% endfor %}
+    <a href='/entrou'>Voltar para o início</a>
+{% endblock %}

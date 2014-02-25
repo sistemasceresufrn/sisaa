@@ -1,0 +1,68 @@
+{% extends 'base.html' %} 
+{% block corpo %}
+
+<h1>Página teste</h1>
+
+<h2>Usuário</h2>
+
+<div>Nome: {{u.nome}}</div>
+<div>Email: {{u.email}}</div>
+<div>Senha: {{u.senha}}</div>
+<div>Clique <a href='/logout'>aqui</a> para sair.</div>
+
+<br/>
+<br/>
+
+<h2>Artigos</h2>
+<a href='/art/'>Ver todos</a>
+<br/>
+<br/>
+
+<h2>Grupos de trabalho</h2>
+<a href='/cad/gt'>Cadastrar</a> | <a href='/gt/'>Ver todos</a> | 
+<a href='/meus/gt/'>Ver Meus</a>
+<br/>
+<br/>
+
+<h2>Credenciais</h2>
+Marque suas credenciais abaixo, salve e tente acessar as páginas.
+<form method='post'>
+	<div>
+		<input type='checkbox' name='adm' {{admin_checked}}>
+		<label for='adm'>Administrador</label>
+	</div>
+	
+	<div>
+		<input type='checkbox' name='ava' {{aval_checked}}>
+		<label for='ava'>Avaliador</label>
+	</div>
+	
+	<div>
+		<input type='checkbox' name='alu' {{aluno_checked}}>
+		<label for='alu'>Aluno</label>
+	</div>
+	
+	<div>
+		<input type='checkbox' name='org' {{org_checked}}>
+		<label for='org'>Organizador</label>
+	</div>
+	
+	<div>
+		<input type='submit' value='Salvar credenciais'>
+	</div>
+</form>
+<br/>
+<br/>
+
+<h2>Páginas</h2>
+<a href='/alu'>Página de Aluno</a> | <a href='/adm'>Página de Administrador</a> | <a href='/ava'>Página de Avaliador</a> | <a href='/org'>Página de Organizador</a> 
+<br/>
+<br/>
+
+<h2>Organizadores</h2>
+<a href='/cad/org'>Cadastrar</a> | <a href='/org/'>Ver todos</a>
+<br/>
+<br/>
+
+{% endblock %}
+

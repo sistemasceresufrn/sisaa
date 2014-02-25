@@ -1,0 +1,150 @@
+# -*- coding:utf-8 -*-
+from google.appengine.ext import ndb, blobstore
+from webapp2_extras.security import hash_password
+import util, os, re
+from valores import debug, esperando_avaliacao, travado, ava, org, adm, alu
+from validadores import *
+
+class Usuario(ndb.Model):
+    '''Usuário do sistema. Possui o email único e tem a senha gerada 
+    automaticamente se chamar o put() sem antes setar a senha.'''
+    nome = ndb.StringProperty(default=u'Usuário sem nome')
+    email = ndb.StringProperty(required=True)
+    senha = ndb.StringProperty()
+    criptografou_senha = ndb.BooleanProperty(default=False)
+    credenciais = ndb.StringProperty(repeated=True)
+    
+    def _pre_put_hook(self):
+        validar_usuario(self)
+        
+        if not self.senha:
+            self.senha = util.random_string()
+        
+        if debug: # exibindo a senha somente na máquina local
+            print self.senha
+
+        # Caso o usuário possa alterar a senha, a variável criptografou_senha
+        # deverá ser setada como False.
+        if not self.criptografou_senha:
+            self.senha = hash_password(self.senha, 'sha1')
+            self.criptografou_senha = True
+        
+        self.key = ndb.Key(Usuario, self.email)
+    
+    def add_credencial(self, cred):
+        '''Adiciona uma credencial ao usuário. Mas NÃO salva no banco,
+        faça isso manualmente.
+        :param cred:
+            A constante que representa a credencial desejada. Importe
+            valores.py e use ava, org, alu ou adm.
+        '''
+        validar_credencial(cred)
+        if cred not in self.credenciais:
+            self.credenciais += [cred]
+    
+    def del_credencial(self, cred):
+        validar_credencial(cred)
+        novas_credenciais = []
+        for c in self.credenciais:
+            if c != cred:
+                novas_credenciais += [c]
+        self.credenciais = novas_credenciais
+    
+    @classmethod
+    def get_or_create(cls, email, **kwds):
+        u = cls.find_by_email(email)
+        if not u:
+            u = cls(email = email, **kwds)
+            u.put()
+        return u
+    
+    @classmethod
+    def find_by_email(cls, email):
+        return cls.query().filter(cls.email == email).get()
+
+class GrupoDeTrabalho(ndb.Model):
+    '''Grupo de Trabalho. Possui a sigla única.'''
+    nome = ndb.StringProperty(required=True)
+    
+    sigla = ndb.StringProperty(required=True)
+    
+    organizador = ndb.StringProperty() # ReferenceProperty(User, required=True)
+    
+    edital = ndb.BlobKeyProperty(required=True)
+    
+    # : Data de início das submissões
+    ini_sub = ndb.DateProperty(required=True)
+    
+    # : Data de fim das submissões
+    fim_sub = ndb.DateProperty(required=True)
+    
+    # : Data de início das avaliações
+    ini_ava = ndb.DateProperty(required=True) 
+    
+    # : Data de fim das avaliações
+    fim_ava = ndb.DateProperty(required=True)
+    
+    # : Indica se os artigos já foram aprovados 
+    estado = ndb.StringProperty(default=travado, required=True)
+    
+    avaliadores = ndb.StringProperty(repeated=True)
+    
+    @classmethod
+    def find_by_sigla(cls, sigla):
+        return cls.query().filter(cls.sigla == sigla).get()
+    
+    def _pre_put_hook(self):
+        validar_gt(self)
+        #TODO: excluir edital antigo no blobstore
+        
+        #TODO: talvez seja melhor colocar um if aqui pra não recriar a key no alterar
+        self.key = ndb.Key(Usuario, self.organizador, GrupoDeTrabalho, self.sigla)
+
+    @classmethod
+    def _pre_delete_hook(cls, key):
+        #TODO: excluir dependências
+        self = key.get()
+        artigos = Artigo.query(ancestor=ndb.Key(GrupoDeTrabalho,
+                               self.sigla)).iter(keys_only=True)
+        for a in artigos:
+            a.delete()
+        #TODO: excluir avaliações
+        
+
+#TODO: rever modelo daqui pra baixo
+class Artigo(ndb.Model):
+    '''Artigo enviado pelos alunos.'''
+    titulo = ndb.StringProperty(required=True)
+    autor = ndb.StringProperty(required=True)
+    sigla_gt = ndb.StringProperty(required=True)
+    situacao = ndb.StringProperty(default=esperando_avaliacao)
+    versao_inicial = ndb.BlobKeyProperty(required=True)
+    versao_final = ndb.BlobKeyProperty()
+    
+    @property
+    def ultima_versao(self):
+        '''Pega a versão do artigo enviada por último.
+        :returns:
+            A versão final do artigo OU a versão inicial, caso a versão 
+            final não tenha sido enviada.'''
+        if self.versao_final:
+            return self.versao_final
+        elif self.versao_inicial:
+            return self.versao_inicial
+        else:
+            None
+    
+    def _pre_put_hook(self):
+        validar_artigo(self)
+        #TODO: talvez seja melhor colocar um if aqui pra não recriar a key no alterar
+        # Colocar o autor na key faz com que o artigo seja substituído,
+        # caso o usuário envie outro artigo para o mesmo GT.
+        self.key = ndb.Key(GrupoDeTrabalho, self.sigla_gt, Artigo, self.autor)
+    
+
+class Avaliacao(ndb.Model):
+    '''Guarda a avaliação feita no artigo.'''
+    avaliador = ndb.KeyProperty(required = True, kind = Usuario)
+    artigo = ndb.KeyProperty(required = True, kind = Artigo)
+    nota = ndb.IntegerProperty(required = True)
+    
