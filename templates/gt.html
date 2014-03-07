@@ -12,6 +12,6 @@
     <!-- 'aceitando submissoes' é idêntico ao do módulo de valores.
          Talvez seja possível importar. -->
     {% if 'alu' in usuario.credenciais and grupo.estado == 'aceitando submissoes' %}
-    <a href='/enviar_artigo/{{grupo.sigla}}'>Submeter artigo</a>
+    <a href='/enviar/{{grupo.sigla}}'>Submeter artigo</a>
     {% endif %}
 {% endblock %}
