@@ -1,6 +1,7 @@
 body{
     font-family: Trebuchet, Helvetica, sans-serif;
     background-color: #FFE7CA;
+    font-size: 12pt;
 }
 
 a { 
@@ -13,4 +14,9 @@ div.dica {
     font-size: 9pt;
     margin-left:10px;
     margin-right:10px;
+}
+
+input {
+    padding:5px;
+    font-size: 12pt;
 }

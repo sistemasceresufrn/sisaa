@@ -2,7 +2,7 @@
 from google.appengine.ext import ndb, blobstore
 from webapp2_extras.security import hash_password
 import util, os, re
-from valores import debug, esperando_avaliacao, travado, ava, org, adm, alu
+from valores import *
 from validadores import *
 
 class Usuario(ndb.Model):
@@ -68,7 +68,7 @@ class GrupoDeTrabalho(ndb.Model):
     
     sigla = ndb.StringProperty(required=True)
     
-    organizador = ndb.StringProperty() # ReferenceProperty(User, required=True)
+    organizador = ndb.StringProperty()
     
     edital = ndb.BlobKeyProperty(required=True)
     
@@ -84,8 +84,11 @@ class GrupoDeTrabalho(ndb.Model):
     # : Data de fim das avaliações
     fim_ava = ndb.DateProperty(required=True)
     
-    # : Indica se os artigos já foram aprovados 
+    # : Indica a situação do gt (travado, aceitando submissões, etc)
     estado = ndb.StringProperty(default=travado, required=True)
+    
+    # : Número de avaliadores por artigo
+    n_ava_por_art = ndb.IntegerProperty(default=default_n_ava_por_art)
     
     avaliadores = ndb.StringProperty(repeated=True)
     
@@ -95,19 +98,26 @@ class GrupoDeTrabalho(ndb.Model):
     
     def _pre_put_hook(self):
         validar_gt(self)
-        #TODO: excluir edital antigo no blobstore
         
-        #TODO: talvez seja melhor colocar um if aqui pra não recriar a key no alterar
+        antigo = GrupoDeTrabalho.find_by_sigla(self.sigla)
+        if antigo: # Se alterar o edital, exclui o blob anterior
+            if antigo.edital != self.edital:
+                blobstore.BlobInfo.get(antigo.edital).delete()
+        
+        # Talvez seja melhor colocar um if aqui pra não recriar a key no alterar
         self.key = ndb.Key(Usuario, self.organizador, GrupoDeTrabalho, self.sigla)
 
     @classmethod
     def _pre_delete_hook(cls, key):
         #TODO: excluir dependências
+        #TODO: excluir edital
         self = key.get()
+        blobstore.BlobInfo.get(self.edital).delete() # Excluindo o edital
         artigos = Artigo.query(ancestor=ndb.Key(GrupoDeTrabalho,
                                self.sigla)).iter(keys_only=True)
-        for a in artigos:
-            a.delete()
+        ndb.delete_multi(artigos)
+        #for a in artigos:
+        #    a.delete()
         #TODO: excluir avaliações
         
 
@@ -136,11 +146,21 @@ class Artigo(ndb.Model):
     
     def _pre_put_hook(self):
         validar_artigo(self)
-        #TODO: talvez seja melhor colocar um if aqui pra não recriar a key no alterar
+        # Talvez seja melhor colocar um if aqui pra não recriar a key no alterar
         # Colocar o autor na key faz com que o artigo seja substituído,
         # caso o usuário envie outro artigo para o mesmo GT.
         self.key = ndb.Key(GrupoDeTrabalho, self.sigla_gt, Artigo, self.autor)
     
+    @classmethod
+    def _pre_delete_hook(cls, key):
+        #TODO: excluir avaliações
+        self = key.get()
+        # Excluindo os blobs
+        if self.versao_final:
+            blobstore.BlobInfo.get(self.versao_final).delete()
+        if self.versao_inicial:
+            blobstore.BlobInfo.get(self.versao_inicial).delete()
+            
 
 class Avaliacao(ndb.Model):
     '''Guarda a avaliação feita no artigo.'''
