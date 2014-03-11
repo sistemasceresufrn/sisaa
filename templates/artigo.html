@@ -2,7 +2,7 @@
 {% block corpo %}
 <div>
     <h1>{{artigo.titulo}}</h1>
-    {{artigo.autor}}
+    {{artigo.autor.nome}} - {{artigo.autor_email}}
 </div>
 <div>
     Artigo submetido para o <a href='/gt/{{artigo.sigla_gt}}'>

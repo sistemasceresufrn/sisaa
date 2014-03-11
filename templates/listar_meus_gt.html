@@ -5,13 +5,14 @@
 
 {% for g in grupos %}
     <div>
-        <div><b><a href='/gt/{{g.sigla}}'>{{g.sigla}} - {{g.nome}}</a></b></div>
-        <a href='/confirmar/del/gt/{{g.sigla}}'>Excluir</a> |
-        <a href='/alt/gt/{{g.sigla}}'>Alterar</a>
+        <div><b><a href='{{var | url("exibir_gt", g.sigla)}}'>{{g.sigla}} - {{g.nome}}</a></b></div>
+        <a href='{{var | url("confirmar_del_gt", g.sigla)}}'>Excluir</a> |
+        <a href='{{var | url("alt_gt_get", g.sigla)}}'>Alterar</a> |
+        <a href='{{var | url("dist", g.sigla)}}'>Distribuir</a>
     </div>
     <br>
 {% endfor %}
 
 
-<a href='/cad/gt'>Cadastrar</a> | <a href='/entrou'>Voltar para o início</a>
+<a href='{{var | url("cad_gt")}}'>Cadastrar</a> | <a href='{{var | url("entrou")}}'>Voltar para o início</a>
 {% endblock %}
