@@ -126,7 +126,10 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
         fim_sub = util.str_para_date(self.request.get('fim_sub'))
         ini_ava = util.str_para_date(self.request.get('ini_ava'))
         fim_ava = util.str_para_date(self.request.get('fim_ava'))
+<<<<<<< HEAD
         n_ava_por_art = int(self.request.get('n_ava_por_art'))
+=======
+>>>>>>> 82008ad00786d3502b78d4366aa00af1453df46d
         emails_ava = self.request.get('emails_ava')
         emails_ava = emails_ava.split('\r\n') # quebrando os emails dos 
                                               # avaliadores em uma lista
@@ -138,7 +141,10 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
             fim_sub = fim_sub, ini_ava = ini_ava, fim_ava = fim_ava)
         
         gt.estado = estado if estado else travado
+<<<<<<< HEAD
         gt.n_ava_por_art = n_ava_por_art if n_ava_por_art else default_n_ava_por_art
+=======
+>>>>>>> 82008ad00786d3502b78d4366aa00af1453df46d
         
         # pega o edital
         edital = None
