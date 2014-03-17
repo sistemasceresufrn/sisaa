@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+<<<<<<< HEAD
 
 '''Este módulo configura o ambiente do jinja (jinja_env) para renderizar
  os templates e define alguns filtros úteis.'''
@@ -20,6 +21,14 @@ def handle_url(var, key, *extra):
 
 # TODO: Estes filtros não estão funcionando corretamente ou não são mais 
 # necessários. Apagar depois.
+=======
+# TODO: Estes filtros não estão funcionando corretamente ou não são mais 
+# necessários. Apagar depois.
+'''Este módulo configura o ambiente do jinja (jinja_env) para renderizar
+ os templates e define alguns filtros úteis.'''
+import jinja2, os, util
+
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
 def handle_textarea_duplo_crlf(texto):
     '''Filtro usado em textareas para resolver um bug que duplicava as 
     novas linhas. Ele substitui o \\r\\n por \\n apenas.
@@ -47,4 +56,7 @@ jinja_env = jinja2.Environment(
 
 jinja_env.filters['textarea_duplo_crlf'] = handle_textarea_duplo_crlf
 jinja_env.filters['lf_como_br'] = handle_lf_como_br
+<<<<<<< HEAD
 jinja_env.filters['url'] = handle_url
+=======
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1

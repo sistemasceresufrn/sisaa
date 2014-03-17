@@ -101,7 +101,10 @@ class GrupoDeTrabalho(ndb.Model):
     # : Número de avaliadores por artigo
     n_ava_por_art = ndb.IntegerProperty(default=default_n_ava_por_art)
     
+<<<<<<< HEAD
     #TODO: refatorar para ndb.KeyProperty(kind=Usuario, repeated=True)
+=======
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
     avaliadores = ndb.StringProperty(repeated=True)
     
     @classmethod
@@ -121,11 +124,22 @@ class GrupoDeTrabalho(ndb.Model):
 
     @classmethod
     def _pre_delete_hook(cls, key):
+<<<<<<< HEAD
+=======
+        #TODO: excluir dependências
+        #TODO: excluir edital
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
         self = key.get()
         blobstore.BlobInfo.get(self.edital).delete() # Excluindo o edital
         artigos = Artigo.query(ancestor=ndb.Key(GrupoDeTrabalho,
                                self.sigla)).iter(keys_only=True)
         ndb.delete_multi(artigos)
+<<<<<<< HEAD
+=======
+        #for a in artigos:
+        #    a.delete()
+        #TODO: excluir avaliações
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
         
 
 #TODO: rever modelo daqui pra baixo
@@ -164,15 +178,23 @@ class Artigo(ndb.Model):
     
     @classmethod
     def _pre_delete_hook(cls, key):
+<<<<<<< HEAD
+=======
+        #TODO: excluir avaliações
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
         self = key.get()
         # Excluindo os blobs
         if self.versao_final:
             blobstore.BlobInfo.get(self.versao_final).delete()
         if self.versao_inicial:
             blobstore.BlobInfo.get(self.versao_inicial).delete()
+<<<<<<< HEAD
         # excluindo as avaliações
         avaliacoes = Avaliacao.query(Avaliacao.art_key == self.key).iter(keys_only=True)
         ndb.delete_multi(avaliacoes)
+=======
+            
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
 
 class Avaliacao(ndb.Model):
     '''Guarda a avaliação feita no artigo.'''

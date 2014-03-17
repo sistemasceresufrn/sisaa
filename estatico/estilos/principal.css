@@ -16,7 +16,16 @@ div.dica {
     margin-right:10px;
 }
 
+<<<<<<< HEAD
 input, textarea  {
     padding:5px;
     font-size: 12pt;
+=======
+input {
+    padding:5px;
+<<<<<<< HEAD
+    font-size: 12pt;
+=======
+>>>>>>> 82008ad00786d3502b78d4366aa00af1453df46d
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
 }
