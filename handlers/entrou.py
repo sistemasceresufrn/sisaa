@@ -1,6 +1,10 @@
 # -*- coding:utf-8 -*-
 from google.appengine.ext import webapp
+<<<<<<< HEAD
 from urls import url
+=======
+from urls import *
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
 from valores import *
 from auth import requer_login
 from base import BaseHandler

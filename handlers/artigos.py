@@ -29,7 +29,6 @@ class ArtigoHandler(BaseHandler, webapp.RequestHandler):
         grupo = GrupoDeTrabalho.find_by_sigla(sigla)
         if grupo:
             self.responder('enviar_artigo.html', {'upload_url' : upload_url,
-                                                  'grupo' : grupo})
         else:
             self.erro_404()
     

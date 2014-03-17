@@ -1,4 +1,22 @@
+# -*- coding:utf-8 -*-
+import util, re, urllib, valores
 
+from google.appengine.ext import ndb
+
+from google.appengine.ext import webapp, blobstore
+from google.appengine.ext.webapp import blobstore_handlers
+
+from modelo import Usuario, GrupoDeTrabalho, Artigo
+from valores import *
+from urls import *
+
+from gaesessions import get_current_session
+from auth import *
+from webapp2_extras.security import hash_password
+
+from base import BaseHandler
+
+__all__ = ['UploadHandler', 'DownloadHandler']
 
 class UploadHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
     #TODO: Levar este método para o ArtigoHandler e apagar este handler.
@@ -12,7 +30,11 @@ class UploadHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
         key = blob_info.key()
         
         artigo = Artigo(titulo = self.request.get('titulo'),
+<<<<<<< HEAD
+            autor_email=self.usuario.email,
+=======
             autor=self.usuario.email,
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
             versao_inicial=key,
             sigla_gt = self.request.get('gt'))
         artigo.put()

@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-import jinja2, os, util, re, urllib, valores
+import util, re, urllib, valores
 
 from google.appengine.ext import ndb
 
@@ -7,14 +7,20 @@ from google.appengine.ext import webapp, blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 
 from modelo import Usuario, GrupoDeTrabalho, Artigo
-from valores import *
-from urls import *
+<<<<<<< HEAD
+from valores import org
+
+from urls import url
+=======
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
 
 from gaesessions import get_current_session
 from auth import *
 from webapp2_extras.security import hash_password
 
 from base import BaseHandler
+
+__all__ = ['AdminHandler', 'AvalHandler', 'AlunoHandler', 'OrgHandler']
 
 class AdminHandler(BaseHandler, webapp.RequestHandler):
     '''Handler para testes'''
@@ -59,7 +65,11 @@ class OrgHandler(BaseHandler, webapp.RequestHandler):
             self.usuario = o          # se cadastre como organizador,
                                       # atualiza a memória para 
                                       # ficar consistente com o banco
+<<<<<<< HEAD
+        self.redirect(url['entrou'])
+=======
         self.redirect('/entrou')
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
     
     @requer_adm
     def listar(self):
@@ -74,8 +84,13 @@ class OrgHandler(BaseHandler, webapp.RequestHandler):
                         u' de ' + email + u', mas ele ainda poderá utilizar o '+
                         u'sistema, só não terá mais permissão de acessar ' +
                         u'páginas restritas a organizadores.',
+<<<<<<< HEAD
+            'uri_sim' : url['del_org'] + '/' + email,
+            'uri_nao' : url['list_org']
+=======
             'uri_sim' : url_del_org + '/' + email,
             'uri_nao' : url_list_org
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
             }
         self.responder('confirmacao.html', valores)
         

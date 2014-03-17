@@ -1,14 +1,24 @@
 # -*- coding:utf-8 -*-
+<<<<<<< HEAD
 import util, re, urllib, random
+=======
+import util, re, urllib, valores
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
 
 from google.appengine.ext import ndb
 
 from google.appengine.ext import webapp, blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 
+<<<<<<< HEAD
 from modelo import *
 from valores import *
 from urls import url
+=======
+from modelo import Usuario, GrupoDeTrabalho, Artigo
+from valores import *
+from urls import *
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
 
 from gaesessions import get_current_session
 from auth import *
@@ -83,7 +93,6 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
             'value_n_ava_por_art' : g.n_ava_por_art, 'edital_key' : g.edital,
             'value_ini_sub' : g.ini_sub, 'value_fim_sub' : g.fim_sub,
             'value_ini_ava' : g.ini_ava, 'value_fim_ava' : g.fim_ava,
-            
             
             'upload_url' : upload_url,
             
@@ -163,6 +172,7 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
         '''Valida os campos do formulário de cadastro de GT.'''
         pass
     
+    @requer_org
     def listar(self):
         '''Lista todos os grupos de trabalho ativos.'''
         grupos = GrupoDeTrabalho.query(GrupoDeTrabalho.estado != finalizado)
@@ -174,6 +184,7 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
         grupos = GrupoDeTrabalho.query(ancestor=ndb.Key(Usuario, self.usuario.email))
         self.responder('listar_meus_gt.html', {'grupos' : grupos})
     
+    @requer_org
     def exibir(self, sigla):
         '''Exibe um GT.'''
         sigla = str(urllib.unquote(sigla))
@@ -182,7 +193,7 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
             self.responder('gt.html', {'grupo' : g})
         else:
             self.erro_404()
-    
+   
     @requer_org
     def distribuir(self, sigla):
         '''Distribui os artigos para os avaliadores.'''
@@ -220,4 +231,4 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
         self.responder('mensagem.html', {'titulo' : u'Pronto', 
             'mensagem' : u'Os artigos foram distribuídos para os organizadores',
             'url_voltar' : url['meus_gt']})
-    
+

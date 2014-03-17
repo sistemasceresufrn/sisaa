@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-import jinja2, os, util, re, urllib, valores
+import util, re, urllib, valores
 
 from google.appengine.ext import ndb
 
@@ -8,7 +8,11 @@ from google.appengine.ext.webapp import blobstore_handlers
 
 from modelo import Usuario, GrupoDeTrabalho, Artigo
 from valores import *
+<<<<<<< HEAD
+from urls import url
+=======
 from urls import *
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
 
 from gaesessions import get_current_session
 from auth import *
@@ -16,6 +20,7 @@ from webapp2_extras.security import hash_password
 
 from base import BaseHandler
 
+__all__ = ['ArtigoHandler']
 
 class ArtigoHandler(BaseHandler, webapp.RequestHandler):
     #TODO: fazer upload de artigos através deste handler.
@@ -24,10 +29,17 @@ class ArtigoHandler(BaseHandler, webapp.RequestHandler):
     @requer_alu
     def enviar(self, sigla):
         sigla = str(urllib.unquote(sigla))
+<<<<<<< HEAD
+        upload_url = blobstore.create_upload_url(url['up_art'])
+        grupo = GrupoDeTrabalho.find_by_sigla(sigla)
+        if grupo:
+            self.responder('enviar_artigo.html', {'upload_url' : upload_url,
+=======
         url = blobstore.create_upload_url(url_up_art)
         grupo = GrupoDeTrabalho.find_by_sigla(sigla)
         if grupo:
             self.responder('enviar_artigo.html', {'upload_url' : url,
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
                                                   'grupo' : grupo})
         else:
             self.erro_404()
@@ -40,6 +52,10 @@ class ArtigoHandler(BaseHandler, webapp.RequestHandler):
     
     @requer_alu
     def listar(self):
+<<<<<<< HEAD
+        artigos = Artigo.query(Artigo.autor_email == self.usuario.email)
+=======
         artigos = Artigo.query(Artigo.autor == self.usuario.email)
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
         self.responder('listar_artigos.html', {'artigos' : artigos})
 

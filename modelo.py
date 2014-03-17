@@ -126,7 +126,7 @@ class GrupoDeTrabalho(ndb.Model):
         artigos = Artigo.query(ancestor=ndb.Key(GrupoDeTrabalho,
                                self.sigla)).iter(keys_only=True)
         ndb.delete_multi(artigos)
-        
+
 
 #TODO: rever modelo daqui pra baixo
 class Artigo(ndb.Model):

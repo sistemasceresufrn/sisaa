@@ -4,7 +4,10 @@ from modelo import Usuario
 from auth import requer_login
 from webapp2_extras.security import hash_password
 from base import BaseHandler
+<<<<<<< HEAD
 from urls import url
+=======
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
 
 __all__ = ['LoginHandler']
 

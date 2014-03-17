@@ -26,6 +26,9 @@ __all__ += blobs.__all__
 
 from gts import *
 __all__ += gts.__all__
+<<<<<<< HEAD
 
 from avaliacoes import *
 __all__ = avaliacoes.__all__
+=======
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1

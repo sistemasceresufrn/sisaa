@@ -1,14 +1,24 @@
 # -*- coding:utf-8 -*-
+<<<<<<< HEAD
+import util, re, urllib, random
+=======
 import util, re, urllib, valores
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
 
 from google.appengine.ext import ndb
 
 from google.appengine.ext import webapp, blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 
+<<<<<<< HEAD
+from modelo import *
+from valores import *
+from urls import url
+=======
 from modelo import Usuario, GrupoDeTrabalho, Artigo
 from valores import *
 from urls import *
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
 
 from gaesessions import get_current_session
 from auth import *
@@ -23,7 +33,7 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
 
     @requer_org
     def cadastrar_get(self):
-        valores = {'upload_url' : blobstore.create_upload_url(url_cad_gt_post)}
+        valores = {'upload_url' : blobstore.create_upload_url(url['cad_gt_post'])}
         self.responder('cad_gt.html',valores)
     
     @requer_org
@@ -32,7 +42,7 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
         gt = self._get_gt_da_request()
         self._cadastrar_avaliadores(gt.avaliadores)
         gt.put()
-        self.redirect(url_entrou)
+        self.redirect(url['entrou'])
     
     def _cadastrar_avaliadores(self, emails):
         for i in emails:
@@ -61,14 +71,14 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
         gt = GrupoDeTrabalho.find_by_sigla(sigla)
         gt.key.delete()
         
-        self.redirecionar(url_meus_gt, [u'O grupo de trabalho %s foi excluído.' % sigla])
+        self.redirecionar(url['meus_gt'], [u'O grupo de trabalho %s foi excluído.' % sigla])
     
     @requer_org
     def alterar_get(self, sigla):
         sigla = str(urllib.unquote(sigla))
         g = GrupoDeTrabalho.find_by_sigla(sigla)
         
-        upload_url = blobstore.create_upload_url(url_alt_gt_post+'/'+sigla)
+        upload_url = blobstore.create_upload_url(url['alt_gt_post']+'/'+sigla)
         
         emails_ava = util.string_list_para_string_rn(g.avaliadores)
         
@@ -95,8 +105,6 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
     
     @requer_org
     def alterar_post(self, sigla):
-        # TODO: Terminar de implementar
-        # alterar sigla cria um novo
         sigla = str(urllib.unquote(sigla))
         gt = self._get_gt_da_request()
         antigo_gt = GrupoDeTrabalho.find_by_sigla(sigla)
@@ -114,7 +122,7 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
 
         self._cadastrar_avaliadores(gt.avaliadores)
         gt.put()
-        self.redirecionar(url_meus_gt, [u'Grupo de trabalho alterado.'])
+        self.redirecionar(url['meus_gt'], [u'Grupo de trabalho alterado.'])
     
     def _get_gt_da_request(self):
         '''Instancia um GrupoDeTrabalho através do formulário preenchido.'''
@@ -126,10 +134,7 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
         fim_sub = util.str_para_date(self.request.get('fim_sub'))
         ini_ava = util.str_para_date(self.request.get('ini_ava'))
         fim_ava = util.str_para_date(self.request.get('fim_ava'))
-<<<<<<< HEAD
-        n_ava_por_art = int(self.request.get('n_ava_por_art'))
-=======
->>>>>>> 82008ad00786d3502b78d4366aa00af1453df46d
+        n_ava_por_art = self.request.get('n_ava_por_art')
         emails_ava = self.request.get('emails_ava')
         emails_ava = emails_ava.split('\r\n') # quebrando os emails dos 
                                               # avaliadores em uma lista
@@ -141,10 +146,7 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
             fim_sub = fim_sub, ini_ava = ini_ava, fim_ava = fim_ava)
         
         gt.estado = estado if estado else travado
-<<<<<<< HEAD
-        gt.n_ava_por_art = n_ava_por_art if n_ava_por_art else default_n_ava_por_art
-=======
->>>>>>> 82008ad00786d3502b78d4366aa00af1453df46d
+        gt.n_ava_por_art = int(n_ava_por_art) if n_ava_por_art else default_n_ava_por_art
         
         # pega o edital
         edital = None
@@ -168,6 +170,10 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
     
     def _validar_campos(self):
         '''Valida os campos do formulário de cadastro de GT.'''
+<<<<<<< HEAD
+        pass
+    
+=======
         #TODO: refazer validação
         assert isinstance(self.request, webapp.Request), 'Requisição inválida.'
         # validação dos campos obrigatórios
@@ -179,17 +185,25 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
         # TODO: validar emails
     
     @requer_org
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
     def listar(self):
         '''Lista todos os grupos de trabalho ativos.'''
         grupos = GrupoDeTrabalho.query(GrupoDeTrabalho.estado != finalizado)
         self.responder('listar_gt.html', {'grupos' : grupos})
     
+<<<<<<< HEAD
+    @requer_org
+=======
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
     def listar_meus(self):
         '''Lista todos os grupos de trabalho de um organizador.'''
         grupos = GrupoDeTrabalho.query(ancestor=ndb.Key(Usuario, self.usuario.email))
         self.responder('listar_meus_gt.html', {'grupos' : grupos})
     
+<<<<<<< HEAD
+=======
     @requer_org
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
     def exibir(self, sigla):
         '''Exibe um GT.'''
         sigla = str(urllib.unquote(sigla))
@@ -198,4 +212,46 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
             self.responder('gt.html', {'grupo' : g})
         else:
             self.erro_404()
+<<<<<<< HEAD
+    
+    @requer_org
+    def distribuir(self, sigla):
+        '''Distribui os artigos para os avaliadores.'''
+        sigla = str(urllib.unquote(sigla))
+        gt = GrupoDeTrabalho.find_by_sigla(sigla)
+        
+        # pegando todos os avaliadores do gt como list de Usuario
+        list_ava = []
+        for email in gt.avaliadores:
+            ava = Usuario.find_by_email(email)
+            list_ava += [ava]
+        
+        if gt.n_ava_por_art > len(list_ava):
+            self.responder('mensagem.html', {'titulo' : u'Erro', 
+                'mensagem' : u'''O número de avaliadores por artigo excede
+                             o total de avaliadores do grupo de trabalho.
+                             Cadastre mais avaliadores ou diminua o número 
+                             de avaliadores por artigo.''',
+                'url_voltar' : url['meus_gt']})
+            return
+        
+        random.shuffle(list_ava)
+        
+        artigos = Artigo.query(Artigo.sigla_gt == sigla)
+        
+        i = 0 # índice de acesso aos elementos da lista de avaliadores
+        tam = len(list_ava) # tamanho da lista de avaliadores
+        
+        for art in artigos:
+             for n in range(gt.n_ava_por_art):
+                Avaliacao(art_key = art.key,
+                          ava_key = list_ava[i % tam].key).put()
+                i += 1
+        
+        self.responder('mensagem.html', {'titulo' : u'Pronto', 
+            'mensagem' : u'Os artigos foram distribuídos para os organizadores',
+            'url_voltar' : url['meus_gt']})
+    
+=======
 
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
