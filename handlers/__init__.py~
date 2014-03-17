@@ -9,8 +9,8 @@ __all__ += base.__all__
 from login import *
 __all__ += login.__all__
 
-from inicio import *
-__all__ += inicio.__all__
+from paginas import *
+__all__ += paginas.__all__
 
 from entrou import *
 __all__ += entrou.__all__
@@ -26,3 +26,14 @@ __all__ += blobs.__all__
 
 from gts import *
 __all__ += gts.__all__
+<<<<<<< HEAD
+
+from avaliacoes import *
+__all__ = avaliacoes.__all__
+=======
+<<<<<<< HEAD
+
+from avaliacoes import *
+__all__ = avaliacoes.__all__
+
+>>>>>>> f65b671556c86dc894e530dbae207246647f465e

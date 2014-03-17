@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block corpo %}
+
+<h1>Meus grupos de trabalho</h1>
+
+{% for g in grupos %}
+    <div>
+        <div><b><a href='{{var | url("exibir_gt", g.sigla)}}'>{{g.sigla}} - {{g.nome}}</a></b></div>
+        <a href='{{var | url("confirmar_del_gt", g.sigla)}}'>Excluir</a> |
+        <a href='{{var | url("alt_gt_get", g.sigla)}}'>Alterar</a> |
+<<<<<<< HEAD
+        <a href='{{var | url("dist", g.sigla)}}'>Distribuir</a> |
+        <a href='{{var | url("res", g.sigla)}}'>Ver resultados</a>
+=======
+        <a href='{{var | url("dist", g.sigla)}}'>Distribuir</a>
+>>>>>>> f65b671556c86dc894e530dbae207246647f465e
+    </div>
+    <br>
+{% endfor %}
+
+
+<a href='{{var | url("cad_gt")}}'>Cadastrar</a> | <a href='{{var | url("entrou")}}'>Voltar para o início</a>
+{% endblock %}

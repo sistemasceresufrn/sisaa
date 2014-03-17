@@ -8,7 +8,6 @@ from google.appengine.ext.webapp import blobstore_handlers
 
 from modelo import Usuario, GrupoDeTrabalho, Artigo
 from valores import org
-
 from urls import url
 
 from gaesessions import get_current_session

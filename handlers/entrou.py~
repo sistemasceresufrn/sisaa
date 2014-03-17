@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+<<<<<<< HEAD
 import jinja2, os, util, re, urllib, valores
 
 from google.appengine.ext import ndb
@@ -16,6 +17,19 @@ from webapp2_extras.security import hash_password
 
 from base import BaseHandler
 
+=======
+from google.appengine.ext import webapp
+<<<<<<< HEAD
+from urls import url
+=======
+from urls import *
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
+from valores import *
+from auth import requer_login
+from base import BaseHandler
+
+__all__ = ['EntrouHandler']
+>>>>>>> f65b671556c86dc894e530dbae207246647f465e
 
 class EntrouHandler(BaseHandler, webapp.RequestHandler):
     '''Handler criado para testes. Será apagado futuramente.'''
@@ -46,5 +60,9 @@ class EntrouHandler(BaseHandler, webapp.RequestHandler):
         self.usuario = u
         self.usuario.put()
         
+<<<<<<< HEAD
         self.redirect(url_entrou)
+=======
+        self.redirect(url['entrou'])
+>>>>>>> f65b671556c86dc894e530dbae207246647f465e
 

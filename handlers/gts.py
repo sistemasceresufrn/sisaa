@@ -2,7 +2,6 @@
 import util, re, urllib, random
 
 from google.appengine.ext import ndb
-
 from google.appengine.ext import webapp, blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 
@@ -84,7 +83,6 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
             'value_ini_sub' : g.ini_sub, 'value_fim_sub' : g.fim_sub,
             'value_ini_ava' : g.ini_ava, 'value_fim_ava' : g.fim_ava,
             
-            
             'upload_url' : upload_url,
             
             'trav_checked' : travado_checked, 'fin_checked' : finalizado_checked,
@@ -119,14 +117,14 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
         '''Instancia um GrupoDeTrabalho através do formulário preenchido.'''
         #self._validar_campos()
         
-        nome    = unicode(self.request.get('nome').strip())
-        sigla   = self.request.get('sigla').strip()
+        nome = self.request.get('nome').strip()
+        sigla = self.request.get('sigla').strip()
         ini_sub = util.str_para_date(self.request.get('ini_sub'))
         fim_sub = util.str_para_date(self.request.get('fim_sub'))
         ini_ava = util.str_para_date(self.request.get('ini_ava'))
         fim_ava = util.str_para_date(self.request.get('fim_ava'))
         n_ava_por_art = self.request.get('n_ava_por_art')
-        emails_ava = unicode(self.request.get('emails_ava'))
+        emails_ava = self.request.get('emails_ava')
         emails_ava = emails_ava.split('\r\n') # quebrando os emails dos 
                                               # avaliadores em uma lista
         emails_ava = list(set(emails_ava)) # retirando elementos repetidos
@@ -163,6 +161,7 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
         '''Valida os campos do formulário de cadastro de GT.'''
         pass
     
+    @requer_org
     def listar(self):
         '''Lista todos os grupos de trabalho ativos.'''
         grupos = GrupoDeTrabalho.query(GrupoDeTrabalho.estado != finalizado)
@@ -174,6 +173,8 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
         grupos = GrupoDeTrabalho.query(ancestor=ndb.Key(Usuario, self.usuario.email))
         self.responder('listar_meus_gt.html', {'grupos' : grupos})
     
+
+    @requer_org
     def exibir(self, sigla):
         '''Exibe um GT.'''
         sigla = str(urllib.unquote(sigla))
@@ -182,7 +183,7 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
             self.responder('gt.html', {'grupo' : g})
         else:
             self.erro_404()
-    
+
     @requer_org
     def distribuir(self, sigla):
         '''Distribui os artigos para os avaliadores.'''
@@ -221,7 +222,7 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
         self.responder('mensagem.html', {'titulo' : u'Pronto', 
             'mensagem' : u'Os artigos foram distribuídos para os organizadores',
             'url_voltar' : url['meus_gt']})
-    
+   
     @requer_org
     def ver_resultados(self, sigla):
         sigla = str(urllib.unquote(sigla))

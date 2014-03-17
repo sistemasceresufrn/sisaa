@@ -1,4 +1,5 @@
 #-*- coding:utf-8 -*-
+<<<<<<< HEAD
 import jinja2, os, util, re, urllib, valores
 
 from google.appengine.ext import ndb
@@ -17,6 +18,18 @@ from webapp2_extras.security import hash_password
 
 
 
+=======
+from valores import *
+from gaesessions import get_current_session
+from custom_jinja import jinja_env
+
+__all__ = ['BaseHandler']
+
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
+>>>>>>> f65b671556c86dc894e530dbae207246647f465e
 class BaseHandler():
     '''Handler base que todos os outros devem extender. Possui os métodos
     implementados, mas não pode ser usado diretamente porque não extende
@@ -24,11 +37,14 @@ class BaseHandler():
     deixar o programador livre para escolher qual handler extender junto
     com este.'''
     
+<<<<<<< HEAD
     jinja_env = jinja2.Environment(
         loader = jinja2.FileSystemLoader(os.path.dirname(__file__) + '/../templates/'),
         extensions=['jinja2.ext.autoescape'],
         autoescape=True)
 
+=======
+>>>>>>> f65b671556c86dc894e530dbae207246647f465e
     @property
     def sessao(self):
         '''Propriedade que dá acesso à sessão.
@@ -55,7 +71,11 @@ class BaseHandler():
         valores['usuario'] = self.usuario
         valores['msgs'] = self.mensagens
         self.mensagens = []
+<<<<<<< HEAD
         self.response.out.write(self.jinja_env.get_template(pagina).render(valores))
+=======
+        self.response.out.write(jinja_env.get_template(pagina).render(valores))
+>>>>>>> f65b671556c86dc894e530dbae207246647f465e
 
     def _get_usuario(self):
         '''Acessa o usuário na sessão. Não use esse método diretamente;

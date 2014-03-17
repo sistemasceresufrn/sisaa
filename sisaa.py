@@ -35,6 +35,7 @@ app = webapp.WSGIApplication([
     Route(url['alt_gt_get_sigla'], 'handlers.GTHandler:alterar_get'),
     Route(url['alt_gt_post_sigla'], 'handlers.GTHandler:alterar_post', methods=['POST']),
     Route(url['dist_sigla'], 'handlers.GTHandler:distribuir'),
+
     Route(url['res_sigla'], 'handlers.GTHandler:ver_resultados'),
     Route(url['salvar_res_sigla'], 'handlers.GTHandler:salvar_resultados'),
     Route(url['fin_res_sigla'], 'handlers.GTHandler:finalizar_resultados'),

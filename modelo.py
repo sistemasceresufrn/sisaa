@@ -190,7 +190,7 @@ class Avaliacao(ndb.Model):
     def _pre_put_hook(self):
         #TODO: validação
         pass
-    
+
     @property
     def situacao(self):
         if self.nota:

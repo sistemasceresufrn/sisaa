@@ -1,5 +1,17 @@
 # -*- coding:utf-8 -*-
+<<<<<<< HEAD
 from base import *
+=======
+from google.appengine.ext import webapp
+from modelo import Usuario
+from auth import requer_login
+from webapp2_extras.security import hash_password
+from base import BaseHandler
+<<<<<<< HEAD
+from urls import url
+=======
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
+>>>>>>> f65b671556c86dc894e530dbae207246647f465e
 
 __all__ = ['LoginHandler']
 
@@ -14,7 +26,15 @@ class LoginHandler(BaseHandler, webapp.RequestHandler):
             
         if usuario:
             self.usuario = usuario
+<<<<<<< HEAD
             self.redirect('/entrou')
+=======
+<<<<<<< HEAD
+            self.redirect(url['entrou'])
+=======
+            self.redirect('/entrou')
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
+>>>>>>> f65b671556c86dc894e530dbae207246647f465e
         else:
             self.redirecionar('/', [u'Login ou senha incorretos.'])
 
