@@ -1,6 +1,7 @@
 body{
     font-family: Trebuchet, Helvetica, sans-serif;
     background-color: #FFE7CA;
+    font-size: 12pt;
 }
 
 a { 
@@ -13,4 +14,72 @@ div.dica {
     font-size: 9pt;
     margin-left:10px;
     margin-right:10px;
+}
+
+div.corpo{
+    top:35px;
+}
+
+input, textarea  {
+    padding:5px;
+    font-size: 12pt;
+}
+
+nav.barra_principal {
+    position:fixed;
+    top:0;
+    right:0;
+    left:0;
+    padding:10px;
+    background:solid;
+    background-color:#FF7900;
+}
+
+ul.nav {
+    margin:0;
+    padding:0;
+}
+
+ul.nav li {
+    float:left;
+    list-style:none;   
+    display:inline;
+}
+
+ul.nav li a:hover, a.nav_logout:hover{
+    border-left:solid 6px #FFFFFF;
+}
+
+ul.nav li a , a.nav_logout{
+    border-left:solid 6px transparent;
+    margin-right:20px;
+    padding-left:5px;
+    color:#FFFFFF;
+}
+
+a.nav_logout{
+    float:right;
+}
+
+.table{
+    border-collapse:collapse;
+    background-color:#FFEEAA;
+}
+
+.th{
+    background-color:#FFCB00;
+    border: 2px solid #E0AD00;
+    color: #FFFFFF;
+    font-weight:normal;
+}
+
+.td, .td_coment{
+    border: 1px solid #808080;
+    border-top: none;
+    padding:5px;
+}
+
+.td_coment pre{
+    padding:5px;
+    width:300px;
 }

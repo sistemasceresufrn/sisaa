@@ -1,7 +1,5 @@
 <!-- O autoescape serve para converter caracteres perigosos
-(como ") para o respectivo de escape html (como &quot). Para 
-desativar em uma parte da página, use autoescape false e para reativar,
- use novamente autoescape true -->
+(como ") para o respectivo de escape html (como &quot). -->
 {% autoescape true %}
 <!DOCTYPE html>
 <html>
@@ -16,7 +14,21 @@ desativar em uma parte da página, use autoescape false e para reativar,
     </head>
     <body>
         {% block nav %}
+        {% if usuario %}
+        <nav class='barra_principal'>
+          <ul class='nav'>
+            <li><a href='{{a | url("entrou")}}'>Início</a></li>
+            <li><a href='{{a | url("list_gt")}}'>Grupos de Trabalho</a>
+            <li><a href='{{a | url("minhas_avaliacoes")}}'>Avaliações</a></li>
+            <li><a href=''>Perfil</a></li>
+          </ul>
+        <a class='nav_logout' href='{{a | url("logout")}}'>Sair</a> 
+        </nav>
+        
+        <br>
+        {% endif %}
         {% endblock %}
+        
         
     	{% block mensagens %}
 	   		<ul>
@@ -25,10 +37,10 @@ desativar em uma parte da página, use autoescape false e para reativar,
 		    	{% endfor %}
 	    	</ul>
     	{% endblock %}
-    	
+    	<div class='corpo'>
         {% block corpo %}
-
         {% endblock %}
+        </div>
     </body>
 </html>
 {% endautoescape %}

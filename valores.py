@@ -37,8 +37,15 @@ esperando_avaliacao = u'esperando avaliação'
 list_situacoes_artigo = [aceito, aceito_com_correcoes, recusado, 
     esperando_avaliacao]
 
+# situações de avaliações
+feita = 'feita'
+pendente = 'pendente'
+
 # expressões regulares para validações
 email_regex_py = r'\w+@\w+\.\w+\.?\w*' #TODO: não aceitar caracteres estranhos
 nome_regex_py = r'\w+' #TODO: não aceitar números ou caracteres estranhos
 nome_gt_regex_py = r'\w+'
 sigla_regex_py = r'\w+' #TODO: não aceitar / ? = e outros caracteres de url
+
+# valores default
+default_n_ava_por_art = 3

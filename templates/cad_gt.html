@@ -66,6 +66,14 @@ Preencha os campos abaixo e pressione o botão para criar um grupo de trabalho.
         <textarea required cols='40' rows='6' name='emails_ava'
             >{{value_emails_ava}}</textarea>
     </div>
+    
+    <div>
+        <label>
+            Número de avaliadores por artigo
+            <input type='number' min='1' name='n_ava_por_art' 
+                maxlength='2' size='2' value='{{value_n_ava_por_art}}'>
+        </label>
+    </div>
 	
     {% block campos_extra %}
     {% endblock %}

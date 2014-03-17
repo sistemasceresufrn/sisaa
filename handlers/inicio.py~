@@ -1,0 +1,24 @@
+#-*- coding:utf-8 -*-
+import jinja2, os, util, re, urllib, valores
+
+from google.appengine.ext import ndb
+
+from google.appengine.ext import webapp, blobstore
+from google.appengine.ext.webapp import blobstore_handlers
+
+from modelo import Usuario, GrupoDeTrabalho, Artigo
+from valores import *
+from urls import *
+
+from gaesessions import get_current_session
+from auth import *
+from webapp2_extras.security import hash_password
+
+import base
+
+__all__ = ['InicioHandler']
+
+class InicioHandler(base.BaseHandler, webapp.RequestHandler):
+    '''Trata as requisições da página inicial'''
+    def get(self):
+        self.responder('inicio.html')

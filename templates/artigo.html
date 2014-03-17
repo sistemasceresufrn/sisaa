@@ -2,11 +2,11 @@
 {% block corpo %}
 <div>
     <h1>{{artigo.titulo}}</h1>
-    {{artigo.autor}}
+    {{artigo.autor.nome}} - {{artigo.autor_email}}
 </div>
 <div>
     Artigo submetido para o <a href='/gt/{{artigo.sigla_gt}}'>
-        {{artigo.sigla_gt}}</a>
+        {{artigo.sigla_gt}}.</a>
 </div>
 <div>
     Clique <a href='/down/{{artigo.ultima_versao}}'>aqui</a> para baixar.

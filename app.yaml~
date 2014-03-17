@@ -1,4 +1,4 @@
-application: ciro-app-id
+application: sisaa
 version: 1
 runtime: python27
 api_version: 1
@@ -9,7 +9,6 @@ handlers:
   static_dir: estatico
 - url: /.*
   script: sisaa.app
-  secure: always
 
 libraries:
 - name: jinja2

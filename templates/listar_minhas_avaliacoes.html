@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block corpo %}
+
+<h1>Minhas avaliações</h1>
+
+{% for a in avaliacoes %}
+    <div>
+        ({{a.situacao.capitalize()}})
+        <a href='{{var | url("exibir_avaliacao", a.key.urlsafe())}}'>{{a.artigo.titulo}}</a> -
+        {{a.artigo.autor.nome}}
+    </div>
+    <br>
+{% endfor %}
+
+<a href='{{var | url("entrou")}}'>Voltar para o início</a>
+
+{% endblock %}
+

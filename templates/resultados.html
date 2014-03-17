@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block corpo %}
+<h1>Resultados</h1>
+
+<form>
+    <TABLE class='table'>
+        <TR VALIGN=TOP>
+            <Th class='th'>
+                <P>Aceitar?</P>
+            </Th>
+            <Th class='th'>
+                <P>Artigo</P>
+            </Th>
+            <Th class='th'>
+                <P>Avaliador</P>
+            </Th>
+            <Th class='th'>
+                <P>Comentário</P>
+            </Th>
+            <Th class='th'>
+                <P>Nota</P>
+            </Th>
+        </TR>
+        
+        {% set list_art = gt.artigos.iter() %}
+        {% for art in list_art %}
+            {% set list_avaliacoes = art.avaliacoes.iter() %}
+            {% set ava = list_avaliacoes.next() %}
+            <TR VALIGN=TOP>
+                <TD ROWSPAN={{gt.n_ava_por_art}} class='td'>
+                    <input type='checkbox' name='{{art.key.urlsafe()}}' 
+                        {{checked}}>
+                </TD>
+                <TD ROWSPAN={{gt.n_ava_por_art}} class='td'>
+                    <b>{{art.titulo}}</b><BR>
+                    {{art.autor.nome}}
+                </TD>
+                <TD class='td'>
+                    {{ava.avaliador.nome}} <br>
+                    {{ava.avaliador.email}}
+                </TD>
+                <TD class='td_coment'>
+                    <pre>{{ava.comentarios}}</pre>
+                </TD>
+                <TD class='td'>
+                    {{ava.nota}}
+                </TD>
+            </TR>
+            {% for ava in list_avaliacoes %}
+                <TR VALIGN=TOP>
+                    <TD class='td'>
+                        {{ava.avaliador.nome}}
+                    </TD>
+                    <TD class='td_coment'>
+                        <pre>{{ava.comentarios}}</pre>
+                    </TD>
+                    <TD class='td'>
+                        {{ava.nota}}
+                    </TD>
+                </TR>
+            {% endfor %}
+
+        {% endfor %}
+    </TABLE>
+    <input type='submit' value='Salvar' formaction='{{asdf | url("salvar_res", gt.sigla)}}'>
+    <input type='submit' value='Finalizar' formaction='{{asdf | url("fin_res", gt.sigla)}}'>
+</form>
+
+{% endblock %}

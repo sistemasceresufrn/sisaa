@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block corpo %}
+<h1>Avaliar artigo</h1>
+<div>
+    Título: <b>{{a.artigo.titulo}}</b> <br>
+    Autor: {{a.artigo.autor.nome}} - {{a.artigo.autor.email}} <br>
+    <a href='{{asdf | url("baixar", a.artigo.versao_inicial)}}'>Baixar artigo</a>
+</div>
+
+<br>
+
+<div>
+    <h3>Sua avaliação</h3>
+    
+    <form action='{{asdf | url("avaliar", a.key.urlsafe())}}'>
+        <label> Comentário
+            <div>
+                <textarea required cols='40' rows='5' name='comentarios'
+                    wrap='soft'>{{a.comentarios}}</textarea>
+            </div>
+        </label>
+        
+        <div>
+            <label> Nota
+                <input name='nota' type='number' step='0.1' min='0' max='10'
+                    required value='{{a.nota}}'>
+            </label>
+        </div>
+        
+        <input type='submit' value='Avaliar'>
+    </form>
+</div>
+{% endblock %}
