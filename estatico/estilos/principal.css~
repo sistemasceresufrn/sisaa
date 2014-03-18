@@ -16,6 +16,7 @@ div.dica {
     margin-right:10px;
 }
 
+<<<<<<< HEAD
 div.corpo{
     top:35px;
 }
@@ -82,14 +83,18 @@ a.nav_logout{
 .td_coment pre{
     padding:5px;
     width:300px;
-}
-
+=======
+<<<<<<< HEAD
 input, textarea  {
     padding:5px;
     font-size: 12pt;
-}
-
+=======
 input {
     padding:5px;
+<<<<<<< HEAD
     font-size: 12pt;
+=======
+>>>>>>> 82008ad00786d3502b78d4366aa00af1453df46d
+>>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
+>>>>>>> f65b671556c86dc894e530dbae207246647f465e
 }
