@@ -28,8 +28,17 @@
             {% set ava = list_avaliacoes.next() %}
             <TR VALIGN=TOP>
                 <TD ROWSPAN={{gt.n_ava_por_art}} class='td'>
-                    <input type='checkbox' name='{{art.key.urlsafe()}}' 
-                        {{checked}}>
+                    <select name='{{art.key.urlsafe()}}'>
+                        <option value='{{aceito}}'
+                            {% if art.situacao == aceito %} selected {% endif %}
+                            >{{aceito.capitalize()}}</option>
+                        <option value='{{aceito_com_correcoes}}'
+                            {% if art.situacao == aceito_com_correcoes %} selected {% endif %}
+                            >{{aceito_com_correcoes.capitalize()}}</option>
+                        <option value='{{recusado}}'
+                            {% if art.situacao == recusado %} selected {% endif %}
+                            >{{recusado.capitalize()}}</option>
+                    </select>
                 </TD>
                 <TD ROWSPAN={{gt.n_ava_por_art}} class='td'>
                     <b>{{art.titulo}}</b><BR>

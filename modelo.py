@@ -163,10 +163,8 @@ class Artigo(ndb.Model):
     
     def _pre_put_hook(self):
         validar_artigo(self)
-        # Talvez seja melhor colocar um if aqui pra não recriar a key no alterar
-        # Colocar o autor na key faz com que o artigo seja substituído,
-        # caso o usuário envie outro artigo para o mesmo GT.
-        self.key = ndb.Key(GrupoDeTrabalho, self.sigla_gt, Artigo, self.autor_email)
+        self.key = ndb.Key(GrupoDeTrabalho, self.sigla_gt, Artigo,
+                           self.autor_email)
     
     @classmethod
     def _pre_delete_hook(cls, key):
@@ -206,3 +204,5 @@ class Avaliacao(ndb.Model):
     @property
     def artigo(self):
         return self.art_key.get()
+    
+    

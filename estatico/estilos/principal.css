@@ -1,11 +1,16 @@
 body{
     font-family: Trebuchet, Helvetica, sans-serif;
-    background-color: #FFE7CA;
+    background-color: #FFF2F4;
     font-size: 12pt;
 }
 
+h1 , h2{
+    color:#5D5D5D;
+    font-weight: normal;
+}
+
 a { 
-    color: #FF5E00;
+    color: #FF0003;
     text-decoration:none;
 }
 
@@ -32,7 +37,7 @@ nav.barra_principal {
     left:0;
     padding:10px;
     background:solid;
-    background-color:#FF7900;
+    background-color:#FF0008;
 }
 
 ul.nav {
@@ -62,8 +67,9 @@ a.nav_logout{
 }
 
 .table{
+    width: 800px;
     border-collapse:collapse;
-    background-color:#FFEEAA;
+    background-color:#FFFFFF;
 }
 
 .th{
@@ -84,12 +90,21 @@ a.nav_logout{
     width:300px;
 }
 
-input, textarea  {
-    padding:5px;
-    font-size: 12pt;
+ul.mensagens{
+    position:fixed;
+    right:0;
+    bottom: 0;
+    color:white;
 }
 
-input {
-    padding:5px;
-    font-size: 12pt;
+ul.mensagens li{
+    float:bottom;
+    list-style-type:none;
+    border:solid 1px #FF4848;
+    background-color:#FF2125;
+    padding:10px;
+    margin:10px;
+    border-radius: 5px;
+    width:300px;
 }
+

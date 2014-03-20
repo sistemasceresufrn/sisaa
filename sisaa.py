@@ -38,7 +38,7 @@ app = webapp.WSGIApplication([
 
     Route(url['res_sigla'], 'handlers.GTHandler:ver_resultados'),
     Route(url['salvar_res_sigla'], 'handlers.GTHandler:salvar_resultados'),
-    Route(url['fin_res_sigla'], 'handlers.GTHandler:finalizar_resultados'),
+    Route(url['fin_res_sigla'], 'handlers.GTHandler:finalizar'),
     
     Route(url['enviar_sigla'], 'handlers.ArtigoHandler:enviar'),
     Route(url['list_art'], 'handlers.ArtigoHandler:listar'),

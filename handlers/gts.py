@@ -219,27 +219,40 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
                           ava_key = list_ava[i % tam].key).put()
                 i += 1
         
-        self.responder('mensagem.html', {'titulo' : u'Pronto', 
-            'mensagem' : u'Os artigos foram distribuídos para os organizadores',
-            'url_voltar' : url['meus_gt']})
+        self.redirecionar(url['meus_gt'],
+            [u'Os artigos foram distribuídos para os avaliadores'])
    
     @requer_org
     def ver_resultados(self, sigla):
         sigla = str(urllib.unquote(sigla))
         gt = GrupoDeTrabalho.find_by_sigla(sigla)
         
-        self.responder('resultados.html', {'gt': gt})
+        self.responder('resultados.html',
+            {'gt': gt, 'aceito' : aceito, 'recusado': recusado,
+             'aceito_com_correcoes' : aceito_com_correcoes})
     
     @requer_org
     def salvar_resultados(self, sigla):
         sigla = str(urllib.unquote(sigla))
         gt = GrupoDeTrabalho.find_by_sigla(sigla)
+        self._salvar_situacoes_da_request(gt)
+        
+        # TODO: descobrir por que se fizer isto, fica inconsistente com o banco
+        # self.redirecionar(url['res'] % sigla, [u'Suas alterações foram salvas.'])
+        self.redirecionar(url['entrou'])
+    
+    @requer_org
+    def finalizar(self, sigla):
+        sigla = str(urllib.unquote(sigla))
+        gt = GrupoDeTrabalho.find_by_sigla(sigla)
+        self._salvar_situacoes_da_request(gt)
+        gt.estado = finalizado
+        gt.put()
+        self.redirecionar(url['meus_gt'],
+            [u'O grupo de trabalho %s foi finalizado.' % gt.sigla])
+    
+    def _salvar_situacoes_da_request(self, gt):
         for art in gt.artigos: # marcando os artigos no banco
-            marcado = self.request.get(art.key.urlsafe())
-            if marcado:
-                # TODO: marcar artigo como aprovado
-                art.put()
-        
-        #TODO:Implementar aqui
-        self.redirecionar(url['res'] % sigla, [u'Suas alterações foram salvas.'])
-        
+            selecao = self.request.get(art.key.urlsafe())
+            art.situacao = selecao
+            art.put()

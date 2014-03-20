@@ -88,12 +88,6 @@ def validar_estado(estado):
     if estado not in list_estados_gt:
         raise ValueError(u'O estado %s é inválido.' % estado)
 
-def validar_edital(edital_key):
-    '''Garante que o edital exista no blobstore.'''
-    blob_info = blobstore.BlobInfo.get(edital_key)
-    if not blob_info:
-        raise ValueError(u'O edital não existe.')
-
 def validar_avaliador(email_ava):
     '''Valida um avaliador, garantindo que o email é válido, o usuário
     existe e tem a credencial.
@@ -114,15 +108,62 @@ def validar_avaliadores(emails_ava):
     for e in emails_ava:
         validar_avaliador(e)
 
+def validar_n_ava_por_art(n):
+    '''Valida o n_ava_por_art (número de avaliadores por artigo) de um gt.
+    :param n:
+        O n_ava_por_art. Um float.'''
+    assert isinstance(n, int), u'O número de avaliadores por artigo ' +\
+                                 u'deve ser um número natural maior que 0.'
+    if n < 1 or n > 10:
+        raise ValueError(u'O número de avaliadores por artigo deve ser '
+                         + u' maior que 0.')
+
 def validar_gt(gt):
     '''Valida um GT'''
     validar_nome_gt(gt.nome)
     validar_sigla_unica(gt.sigla, gt.key.urlsafe())
     validar_organizador(gt.organizador)
-    validar_edital(gt.edital)
+    validar_blob(gt.edital)
     validar_estado(gt.estado)
     validar_avaliadores(gt.avaliadores)
+    validar_n_ava_por_art(gt.n_ava_por_art)
+
+def validar_situacao_art(s):
+    '''Valida a situação de um artigo.
+    :param s:
+        A situação do artigo.'''
+    for i in list_situacoes_artigo:
+        if s == i:
+            return
+    raise ValueError('A situação deve ser uma das seguintes' + 
+                      str(list_situacoes_artigo))
+    
+def validar_blob(key):
+    '''Valida um blob verificando se ele existe no blobstore.
+    :param key:
+        A chave do blob a ser buscado. Uma BlobKey.'''
+    if not blobstore.BlobInfo.get(key):
+        raise ValueError(u'Arquivo inexistente.' +
+                         u' A key não corresponde a nenhum blob.')
 
 def validar_artigo(art):
-    #TODO: implementar validação
-    pass
+    '''Valida um artigo.'''
+    validar_email(art.autor_email)
+    validar_sigla(art.sigla_gt)
+    validar_situacao_art(art.situacao)
+    validar_blob(art.versao_inicial)
+    if art.versao_final:
+        validar_blob(art.versao_final)
+
+def validar_comentarios(s):
+    '''Valida os comentários de uma avaliação.
+    :param s:
+        A string que representa os comentários.'''
+    assert isinstance(s, unicode), u'Os comentários devem ser unicode.'
+    
+def validar_avaliacao(a):
+    '''Valida uma avaliação.'''
+    validar_usuario(a.avaliador)
+    validar_blob(a.art_key)
+    validar_comentarios(a.comentarios)
+    
