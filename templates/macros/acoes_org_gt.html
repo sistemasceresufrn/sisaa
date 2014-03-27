@@ -1,0 +1,12 @@
+{% macro acoes_org_gt(grupo, usuario) %}
+<!-- Este macro renderiza as ações que um organizador pode tomar caso ele 
+seja dono do gt.-->
+    {% if usuario %}
+        {% if usuario.email == grupo.organizador %}
+            <a href='{{var | url("confirmar_del_gt", grupo.sigla)}}'>Excluir</a> |
+            <a href='{{var | url("alt_gt_get", grupo.sigla)}}'>Alterar</a> |
+            <a href='{{var | url("dist", grupo.sigla)}}'>Distribuir</a> |
+            <a href='{{var | url("res", grupo.sigla)}}'>Ver resultados</a>
+        {% endif %}
+    {% endif %}
+{% endmacro %}

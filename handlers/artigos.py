@@ -43,4 +43,11 @@ class ArtigoHandler(BaseHandler, webapp.RequestHandler):
     def listar(self):
         artigos = Artigo.query(Artigo.autor_email == self.usuario.email)
         self.responder('listar_artigos.html', {'artigos' : artigos})
-
+    
+    def menu(self):
+        todos = Artigo.query()
+        meus = []
+        if self.usuario:
+            if alu in self.usuario.credenciais:
+                meus = Artigo.query(Artigo.autor_email == self.usuario.email)
+        self.responder('menu_art.html', {'todos' : todos, 'meus': meus})

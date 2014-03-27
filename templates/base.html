@@ -14,19 +14,32 @@
     </head>
     <body>
         {% block nav %}
-        {% if usuario %}
         <nav class='barra_principal'>
           <ul class='nav'>
+            {% if usuario %}
             <li><a href='{{a | url("entrou")}}'>Início</a></li>
-            <li><a href='{{a | url("list_gt")}}'>Grupos de Trabalho</a>
-            <li><a href='{{a | url("minhas_avaliacoes")}}'>Avaliações</a></li>
-            <li><a href=''>Perfil</a></li>
+            {% endif %}
+            <li><a href='{{a | url("menu_gt")}}'>Grupos de Trabalho</a>
+            {% if 'ava' in usuario.credenciais %}
+            <li><a href='{{a | url("menu_avaliacao")}}'>Avaliações</a></li>
+            {% endif %}
+            {% if usuario %}
+            <li><a href='{{a | url("menu_usuario")}}'>Pessoal</a></li>
+            {% endif %}
+            <li><a href='{{a | url("menu_art")}}'>Artigos</a></li>
+            {% if 'adm' in usuario.credenciais %}
+            <li><a href='{{a | url("menu_org")}}'>Organizadores</a></li>
+            {% endif %}
           </ul>
-        <a class='nav_logout' href='{{a | url("logout")}}'>Sair</a> 
+          
+        {% if usuario %}
+        <a class='nav_direita' href='{{a | url("logout")}}'>Sair</a> 
+        {% else %}
+        <a class='nav_direita' href='/'>Login</a> 
+        {% endif %}
         </nav>
         
         <br>
-        {% endif %}
         {% endblock %}
         
         
@@ -37,10 +50,12 @@
 		    	{% endfor %}
 	    	</ul>
     	{% endblock %}
+        
     	<div class='corpo'>
         {% block corpo %}
         {% endblock %}
         </div>
+        
     </body>
 </html>
 {% endautoescape %}

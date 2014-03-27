@@ -49,3 +49,8 @@ sigla_regex_py = r'\w+' #TODO: não aceitar / ? = e outros caracteres de url
 
 # valores default
 default_n_ava_por_art = 3
+
+# E-mails
+email_cadastro = '''
+Teste
+'''

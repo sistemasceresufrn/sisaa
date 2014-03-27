@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block corpo %}
+
+<h1>Usuário</h1>
+<h2>Meus dados</h2>
+<form action='{{a|url("alt_usuario")}}'>
+    <label>Nome
+        <input type='text' value='{{usuario.nome}}' name='nome'>
+    </label>
+    <br>
+    <label>Email
+        <input type='text' value='{{usuario.email}}' name='email' readonly>
+    </label>
+    <br>
+    <input type='submit' value='Alterar'>
+</form>
+<br/>
+
+<h2>Minhas credenciais</h2>
+{% for i in usuario.credenciais %}
+- {{(i | credencial).capitalize()}} <br>
+{% endfor %}
+
+
+{% endblock %}

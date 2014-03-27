@@ -16,6 +16,7 @@ url['up'] = '/up'
 url['enviar'] = '/enviar'
 url['down'] = '/down'
 url['fin'] = '/finalizar'
+url['menu'] = '/menu'
 
 url['alu'] = '/alu'
 url['adm'] = '/adm'
@@ -34,6 +35,7 @@ url['del_org'] = url['del'] + url['org']
 url['del_org_email'] = url['del_org'] + url['email']
 url['confirmar_del_org'] = url['confirmar'] + url['del_org'] + '/%s'
 url['confirmar_del_org_email'] = url['confirmar_del_org'] % url['email'][1:] # pega a url de email sem a /
+url['menu_org'] = url['menu'] + url['org']
 
 # Urls relacionadas a grupos de trabalho
 url['gt'] = '/gt'
@@ -66,12 +68,15 @@ url['salvar_res_sigla'] = url['salvar'] + url['res_sigla']
 url['fin_res'] = url['fin'] + url['res']
 url['fin_res_sigla'] = url['fin'] + url['res_sigla']
 
+url['menu_gt'] = url['menu'] + url['gt']
+
 # Urls relacionadas a artigos
 url['art'] = '/art'
 url['enviar_sigla'] = url['enviar'] + url['sigla']
 url['list_art'] = url['art'] + '/'
 url['exibir_art'] = url['art'] + '/<key:>'
 url['up_art'] = url['up'] + url['art']
+url['menu_art'] = url['menu'] + url['art']
 
 # Urls relacionadas a avaliações
 url['avaliacao'] = '/avaliacao'
@@ -80,6 +85,12 @@ url['exibir_avaliacao_key'] = url['avaliacao'] + '/<key:>'
 url['avaliar'] = '/avaliar/%s'
 url['avaliar_key'] = url['avaliar'] % '<key:>'
 url['minhas_avaliacoes'] = url['meus'] + url['avaliacao']
+url['menu_avaliacao'] = url['menu'] + url['avaliacao']
+
+# Urls relacionadas a usuários
+url['usuario'] = '/usuario'
+url['menu_usuario'] = url['menu'] + url['usuario']
+url['alt_usuario'] = url['alt'] + url['usuario']
 
 # Outras urls
 url['login'] = '/login'

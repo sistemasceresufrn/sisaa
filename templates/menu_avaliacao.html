@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block corpo %}
+<h1>Avaliações</h1>
+
+<h2>Pendentes</h2>
+{% for a in pendentes %}
+    <div>
+        <a href='{{var | url("exibir_avaliacao", a.key.urlsafe())}}'>{{a.artigo.titulo}}</a> -
+        {{a.artigo.autor.nome}}
+    </div>
+    <br>
+{% endfor %}
+
+<h2>Todas as minhas</h2>
+{% for a in minhas %}
+    <div>
+        <a href='{{var | url("exibir_avaliacao", a.key.urlsafe())}}'>{{a.artigo.titulo}}</a> -
+        {{a.artigo.autor.nome}} <br>
+        {% if a.nota %} Nota {{a.nota}} {% endif %}
+    </div>
+    <br>
+{% endfor %}
+{% endblock %}
+

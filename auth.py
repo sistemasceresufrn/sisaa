@@ -11,7 +11,6 @@ def requer_login(metodo):
             metodo(self, *args, **kwargs)
     return check_login
 
-#TODO: implementar daqui pra baixo
 def requer_adm(metodo):
     def check_login(self, *args, **kwargs):
         if not self.usuario:

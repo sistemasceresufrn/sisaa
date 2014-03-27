@@ -2,9 +2,11 @@ body{
     font-family: Trebuchet, Helvetica, sans-serif;
     background-color: #FFF2F4;
     font-size: 12pt;
+    position:absolute;
+    top:20px;
 }
 
-h1 , h2{
+h1 , h2, h3, h4, h5, h6{
     color:#5D5D5D;
     font-weight: normal;
 }
@@ -19,10 +21,6 @@ div.dica {
     font-size: 9pt;
     margin-left:10px;
     margin-right:10px;
-}
-
-div.corpo{
-    top:35px;
 }
 
 input, textarea  {
@@ -51,18 +49,18 @@ ul.nav li {
     display:inline;
 }
 
-ul.nav li a:hover, a.nav_logout:hover{
+ul.nav li a:hover, a.nav_direita:hover{
     border-left:solid 6px #FFFFFF;
 }
 
-ul.nav li a , a.nav_logout{
+ul.nav li a , a.nav_direita{
     border-left:solid 6px transparent;
     margin-right:20px;
     padding-left:5px;
     color:#FFFFFF;
 }
 
-a.nav_logout{
+a.nav_direita{
     float:right;
 }
 
@@ -107,4 +105,5 @@ ul.mensagens li{
     border-radius: 5px;
     width:300px;
 }
+
 

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block corpo %}
+<h1>Organizadores</h1>
+{% for i in lista %}
+    <div>
+        {{i.nome}} - {{i.email}}<br>
+        <a href='{{a | url("confirmar_del_org", i.email)}}'>Excluir</a>
+    </div>
+{% endfor %}
+<div>
+    <a href='{{a | url("cad_org")}}'>Cadastrar</a> organizador
+</div>
+{% endblock %}

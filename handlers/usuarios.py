@@ -16,7 +16,25 @@ from webapp2_extras.security import hash_password
 
 from base import BaseHandler
 
-__all__ = ['AdminHandler', 'AvalHandler', 'AlunoHandler', 'OrgHandler']
+__all__ = ['AdminHandler', 'AvalHandler', 'AlunoHandler', 'OrgHandler',
+           'UsuarioHandler']
+
+class UsuarioHandler(BaseHandler, webapp.RequestHandler):
+    '''Handler que gerencia os usuários.'''
+    @requer_login
+    def menu(self):
+        self.responder('menu_usuario.html')
+    
+    @requer_login
+    def alterar(self):
+        #TODO:impedir que outro usuário altere meus dados
+        nome = self.request.get('nome').strip()
+        self.usuario.nome=nome
+        u = Usuario.find_by_email(self.usuario.email)
+        u.nome = nome
+        u.put()
+        self.redirecionar(url['menu_usuario'], ['Seus dados foram alterados.'])
+        
 
 class AdminHandler(BaseHandler, webapp.RequestHandler):
     '''Handler para testes'''
@@ -101,4 +119,9 @@ class OrgHandler(BaseHandler, webapp.RequestHandler):
             campo = self.request.get(i).strip()
             assert campo, 'Campo obrigatório não preenchido.'
         # TODO: validar email
+    
+    @requer_adm
+    def menu(self):
+        lista = Usuario.query(Usuario.credenciais == org)
+        self.responder('menu_org.html', {'lista' : lista})
         

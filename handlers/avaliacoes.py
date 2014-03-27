@@ -3,6 +3,7 @@ from base import BaseHandler
 from google.appengine.ext import webapp, ndb
 from auth import requer_ava
 from modelo import Avaliacao
+from valores import pendente
 import urllib
 from urls import url
 
@@ -36,6 +37,16 @@ class AvaliacaoHandler(BaseHandler, webapp.RequestHandler):
         a.put()
         
         self.redirecionar(url['entrou'], [u'Avaliação salva'])
+    
+    @requer_ava
+    def menu(self):
+        minhas = Avaliacao.query(Avaliacao.ava_key == self.usuario.key)
+        pendentes = []
+        for i in minhas:
+            if not i.nota:
+                pendentes += [i]
+        self.responder('menu_avaliacao.html', {'minhas' : minhas,
+            'pendentes' : pendentes})
         
         
         

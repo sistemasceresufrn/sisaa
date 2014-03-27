@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block corpo %}
+<h1>Artigos</h1>
+
+{% if 'alu' in usuario.credenciais %}
+<h2>Meus artigos</h2>
+{% for artigo in meus %}
+<div>
+    <div>
+        <b>{{artigo.titulo}}</b><br>
+        ({{artigo.situacao.capitalize()}})
+    </div> 
+
+    <div>
+        Artigo submetido para o <a href='/gt/{{artigo.sigla_gt}}'>
+            {{artigo.sigla_gt}}.</a>
+    </div>
+
+    <div>
+        Clique <a href='/down/{{artigo.ultima_versao}}'>aqui</a> para baixar.
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+
+<h2>Todos</h2>
+{% for artigo in todos %}
+<div>
+    <div>
+        <b>{{artigo.titulo}}</b><br>
+        {{artigo.autor.nome}} - {{artigo.autor_email}}
+    </div>
+
+    <div>
+        Artigo submetido para o <a href='/gt/{{artigo.sigla_gt}}'>
+            {{artigo.sigla_gt}}.</a>
+    </div>
+
+    <div>
+        Clique <a href='/down/{{artigo.ultima_versao}}'>aqui</a> para baixar.
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

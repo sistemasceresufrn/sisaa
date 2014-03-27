@@ -4,6 +4,7 @@ from webapp2_extras.security import hash_password
 import util, os, re
 from valores import *
 from validadores import *
+from google.appengine.api import mail
 
 class Usuario(ndb.Model):
     '''Usuário do sistema. Possui o email único e tem a senha gerada 
@@ -22,6 +23,9 @@ class Usuario(ndb.Model):
         
         if debug: # exibindo a senha somente na máquina local
             print self.senha
+        
+        if not Usuario.find_by_email(self.email):
+            self.enviar_email(assunto='Bem-vindo ao SISAA', msg=email_cadastro)
 
         # Caso o usuário possa alterar a senha, a variável criptografou_senha
         # deverá ser setada como False.
@@ -30,6 +34,9 @@ class Usuario(ndb.Model):
             self.criptografou_senha = True
         
         self.key = ndb.Key(Usuario, self.email)
+    
+    def enviar_email(self, assunto, msg, de='Sistemas CERES/UFRN <sistemas@ceresufrn.org>'):
+        mail.send_mail(sender = de, to = self.email, subject = assunto, body = msg)
     
     def add_credencial(self, cred):
         '''Adiciona uma credencial ao usuário. Mas NÃO salva no banco,
@@ -83,17 +90,7 @@ class GrupoDeTrabalho(ndb.Model):
     
     edital = ndb.BlobKeyProperty(required=True)
     
-    # : Data de início das submissões
-    ini_sub = ndb.DateProperty(required=True)
-    
-    # : Data de fim das submissões
-    fim_sub = ndb.DateProperty(required=True)
-    
-    # : Data de início das avaliações
-    ini_ava = ndb.DateProperty(required=True) 
-    
-    # : Data de fim das avaliações
-    fim_ava = ndb.DateProperty(required=True)
+    descricao = ndb.StringProperty(required=True)
     
     # : Indica a situação do gt (travado, aceitando submissões, etc)
     estado = ndb.StringProperty(default=travado, required=True)

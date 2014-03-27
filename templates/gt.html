@@ -1,16 +1,20 @@
+{% from '/macros/acoes_org_gt.html' import acoes_org_gt as macro_acoes_org %}
 {% extends 'base.html' %}
 {% block corpo %}
-	<h2>{{grupo.sigla}} - {{grupo.nome}}</h2>
+	<h1>{{grupo.sigla}} - {{grupo.nome}}</h1>
     <div><a href='/down/{{grupo.edital}}'>Edital</a></div>
     <div>Estado: {{grupo.estado}}</div>
-	<div>Submissões de {{grupo.ini_sub}} até {{grupo.fim_sub}}</div>
-	<div>Avaliações de {{grupo.ini_ava}} até {{grupo.fim_ava}}</div>
-	<div>Avaliadores ({{grupo.n_ava_por_art}} por artigo):</div>
+	Descrição:
+    <pre>{{grupo.descricao}}</pre>
+    Avaliadores:
 	{% for a in grupo.avaliadores %}
 		<div>- {{a}}</div>
 	{% endfor %}
+    
+    <h2>Ações</h2>
     <!-- 'aceitando submissoes' é idêntico ao do módulo de valores.
          Talvez seja possível importar. -->
+    {{macro_acoes_org(grupo, usuario)}}
     {% if 'alu' in usuario.credenciais and grupo.estado == 'aceitando submissoes' %}
     <a href='/enviar/{{grupo.sigla}}'>Submeter artigo</a>
     {% endif %}

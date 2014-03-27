@@ -80,8 +80,7 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
         self.responder('alt_gt.html', {'value_nome' : g.nome,
             'value_sigla' : g.sigla, 'value_emails_ava' : emails_ava, 
             'value_n_ava_por_art' : g.n_ava_por_art, 'edital_key' : g.edital,
-            'value_ini_sub' : g.ini_sub, 'value_fim_sub' : g.fim_sub,
-            'value_ini_ava' : g.ini_ava, 'value_fim_ava' : g.fim_ava,
+            'value_descricao' : g.descricao,
             
             'upload_url' : upload_url,
             
@@ -119,10 +118,7 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
         
         nome = self.request.get('nome').strip()
         sigla = self.request.get('sigla').strip()
-        ini_sub = util.str_para_date(self.request.get('ini_sub'))
-        fim_sub = util.str_para_date(self.request.get('fim_sub'))
-        ini_ava = util.str_para_date(self.request.get('ini_ava'))
-        fim_ava = util.str_para_date(self.request.get('fim_ava'))
+        descricao = self.request.get('descricao')
         n_ava_por_art = self.request.get('n_ava_por_art')
         emails_ava = self.request.get('emails_ava')
         emails_ava = emails_ava.split('\r\n') # quebrando os emails dos 
@@ -131,8 +127,7 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
         estado = self.request.get('estado')
         
         # cria o gt
-        gt = GrupoDeTrabalho(nome = nome, sigla = sigla, ini_sub = ini_sub,
-            fim_sub = fim_sub, ini_ava = ini_ava, fim_ava = fim_ava)
+        gt = GrupoDeTrabalho(nome = nome, sigla = sigla, descricao = descricao)
         
         gt.estado = estado if estado else travado
         gt.n_ava_por_art = int(n_ava_por_art) if n_ava_por_art else default_n_ava_por_art
@@ -173,8 +168,6 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
         grupos = GrupoDeTrabalho.query(ancestor=ndb.Key(Usuario, self.usuario.email))
         self.responder('listar_meus_gt.html', {'grupos' : grupos})
     
-
-    @requer_org
     def exibir(self, sigla):
         '''Exibe um GT.'''
         sigla = str(urllib.unquote(sigla))
@@ -256,3 +249,10 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
             selecao = self.request.get(art.key.urlsafe())
             art.situacao = selecao
             art.put()
+    
+    def menu(self):
+        todos = GrupoDeTrabalho.query()
+        meus = []
+        if self.usuario:
+            meus = GrupoDeTrabalho.query(ancestor=ndb.Key(Usuario, self.usuario.email))
+        self.responder('menu_gt.html', {'todos' : todos, 'meus' : meus})

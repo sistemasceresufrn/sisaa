@@ -4,11 +4,26 @@
     <h1>{{artigo.titulo}}</h1>
     {{artigo.autor.nome}} - {{artigo.autor_email}}
 </div>
+
 <div>
     Artigo submetido para o <a href='/gt/{{artigo.sigla_gt}}'>
         {{artigo.sigla_gt}}.</a>
 </div>
+
 <div>
     Clique <a href='/down/{{artigo.ultima_versao}}'>aqui</a> para baixar.
 </div>
+
+{% if dono %}
+Enviar versão final corrigida:
+<form action='{{upload_url}}' method='POST' enctype='multipart/form-data'>
+    <div>
+        <label>
+            Artigo <input type='file' name='file' accept='pdf' required>
+        </label>
+    </div>
+    <input type='submit' value='Enviar'>
+</form>
+{% endif %}
+
 {% endblock %}
