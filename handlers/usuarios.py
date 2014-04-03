@@ -70,11 +70,9 @@ class OrgHandler(BaseHandler, webapp.RequestHandler):
         self._validar_campos()
         nome = self.request.get('nome').strip()
         email = self.request.get('email').strip()
-        #TODO: enviar email para o organizador
         o = Usuario.get_or_create(email = email, nome = nome)
         o.add_credencial(org)
         o.put()
-        
         if o.key == self.usuario.key: # Caso o próprio usuário 
             self.usuario = o          # se cadastre como organizador,
                                       # atualiza a memória para 
@@ -113,12 +111,7 @@ class OrgHandler(BaseHandler, webapp.RequestHandler):
     
     def _validar_campos(self):
         '''Valida os campos do formulário de cadastro de Organizador.'''
-        assert isinstance(self.request, webapp.Request), 'Requisição inválida.'
-        campos = ['nome','email']
-        for i in campos:
-            campo = self.request.get(i).strip()
-            assert campo, 'Campo obrigatório não preenchido.'
-        # TODO: validar email
+        pass
     
     @requer_adm
     def menu(self):

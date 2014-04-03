@@ -31,7 +31,7 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
         gt = self._get_gt_da_request()
         self._cadastrar_avaliadores(gt.avaliadores)
         gt.put()
-        self.redirect(url['entrou'])
+        self.redirect(url['menu_gt'])
     
     def _cadastrar_avaliadores(self, emails):
         for i in emails:
@@ -45,6 +45,7 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
         
     @requer_org
     def confirmar_excluir(self, sigla):
+        #TODO: testar se o usuário é mesmo o dono do gt
         sigla = str(urllib.unquote(sigla))
         valores = {'uri_sim' : '/del/gt/' + sigla,
                    'uri_nao' : '/meus/gt/',
@@ -54,16 +55,16 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
     
     @requer_org
     def excluir(self, sigla):
-        sigla = str(urllib.unquote(sigla))
-        #TODO: implementar exclusão (excluir dependências)
+        #TODO: testar se o usuário é mesmo o dono do gt
         sigla = str(urllib.unquote(sigla))
         gt = GrupoDeTrabalho.find_by_sigla(sigla)
         gt.key.delete()
         
-        self.redirecionar(url['meus_gt'], [u'O grupo de trabalho %s foi excluído.' % sigla])
+        self.redirecionar(url['menu_gt'], [u'O grupo de trabalho %s foi excluído.' % sigla])
     
     @requer_org
     def alterar_get(self, sigla):
+        #TODO: testar se o usuário é mesmo o dono do gt
         sigla = str(urllib.unquote(sigla))
         g = GrupoDeTrabalho.find_by_sigla(sigla)
         
@@ -93,6 +94,7 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
     
     @requer_org
     def alterar_post(self, sigla):
+        #TODO: testar se o usuário é mesmo o dono do gt
         sigla = str(urllib.unquote(sigla))
         gt = self._get_gt_da_request()
         antigo_gt = GrupoDeTrabalho.find_by_sigla(sigla)
@@ -110,7 +112,7 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
 
         self._cadastrar_avaliadores(gt.avaliadores)
         gt.put()
-        self.redirecionar(url['meus_gt'], [u'Grupo de trabalho alterado.'])
+        self.redirecionar(url['menu_gt'], [u'Grupo de trabalho alterado.'])
     
     def _get_gt_da_request(self):
         '''Instancia um GrupoDeTrabalho através do formulário preenchido.'''
@@ -156,18 +158,6 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
         '''Valida os campos do formulário de cadastro de GT.'''
         pass
     
-    @requer_org
-    def listar(self):
-        '''Lista todos os grupos de trabalho ativos.'''
-        grupos = GrupoDeTrabalho.query(GrupoDeTrabalho.estado != finalizado)
-        self.responder('listar_gt.html', {'grupos' : grupos})
-    
-    @requer_org
-    def listar_meus(self):
-        '''Lista todos os grupos de trabalho de um organizador.'''
-        grupos = GrupoDeTrabalho.query(ancestor=ndb.Key(Usuario, self.usuario.email))
-        self.responder('listar_meus_gt.html', {'grupos' : grupos})
-    
     def exibir(self, sigla):
         '''Exibe um GT.'''
         sigla = str(urllib.unquote(sigla))
@@ -212,11 +202,12 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
                           ava_key = list_ava[i % tam].key).put()
                 i += 1
         
-        self.redirecionar(url['meus_gt'],
+        self.redirecionar(url['menu_gt'],
             [u'Os artigos foram distribuídos para os avaliadores'])
    
     @requer_org
     def ver_resultados(self, sigla):
+        #TODO: testar se o usuário é mesmo o dono do gt
         sigla = str(urllib.unquote(sigla))
         gt = GrupoDeTrabalho.find_by_sigla(sigla)
         
@@ -226,22 +217,24 @@ class GTHandler(BaseHandler, blobstore_handlers.BlobstoreUploadHandler):
     
     @requer_org
     def salvar_resultados(self, sigla):
+        #TODO: testar se o usuário é mesmo o dono do gt
         sigla = str(urllib.unquote(sigla))
         gt = GrupoDeTrabalho.find_by_sigla(sigla)
         self._salvar_situacoes_da_request(gt)
         
         # TODO: descobrir por que se fizer isto, fica inconsistente com o banco
         # self.redirecionar(url['res'] % sigla, [u'Suas alterações foram salvas.'])
-        self.redirecionar(url['entrou'])
+        self.redirecionar(url['menu_gt'], [u'Suas alterações foram salvas.'])
     
     @requer_org
     def finalizar(self, sigla):
+        #TODO: testar se o usuário é mesmo o dono do gt
         sigla = str(urllib.unquote(sigla))
         gt = GrupoDeTrabalho.find_by_sigla(sigla)
         self._salvar_situacoes_da_request(gt)
         gt.estado = finalizado
         gt.put()
-        self.redirecionar(url['meus_gt'],
+        self.redirecionar(url['menu_gt'],
             [u'O grupo de trabalho %s foi finalizado.' % gt.sigla])
     
     def _salvar_situacoes_da_request(self, gt):

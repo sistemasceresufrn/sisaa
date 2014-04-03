@@ -4,7 +4,7 @@ from webapp2_extras.security import hash_password
 import util, os, re
 from valores import *
 from validadores import *
-from google.appengine.api import mail
+from emails import enviar_email
 
 class Usuario(ndb.Model):
     '''Usuário do sistema. Possui o email único e tem a senha gerada 
@@ -25,7 +25,8 @@ class Usuario(ndb.Model):
             print self.senha
         
         if not Usuario.find_by_email(self.email):
-            self.enviar_email(assunto='Bem-vindo ao SISAA', msg=email_cadastro)
+            enviar_email(para=self.email, assunto='Bem-vindo ao SISAA',
+                template='email_cadastro')
 
         # Caso o usuário possa alterar a senha, a variável criptografou_senha
         # deverá ser setada como False.
@@ -34,9 +35,6 @@ class Usuario(ndb.Model):
             self.criptografou_senha = True
         
         self.key = ndb.Key(Usuario, self.email)
-    
-    def enviar_email(self, assunto, msg, de='Sistemas CERES/UFRN <sistemas@ceresufrn.org>'):
-        mail.send_mail(sender = de, to = self.email, subject = assunto, body = msg)
     
     def add_credencial(self, cred):
         '''Adiciona uma credencial ao usuário. Mas NÃO salva no banco,
@@ -111,12 +109,10 @@ class GrupoDeTrabalho(ndb.Model):
     
     def _pre_put_hook(self):
         validar_gt(self)
-        
         antigo = GrupoDeTrabalho.find_by_sigla(self.sigla)
         if antigo: # Se alterar o edital, exclui o blob anterior
             if antigo.edital != self.edital:
                 blobstore.BlobInfo.get(antigo.edital).delete()
-        
         # Talvez seja melhor colocar um if aqui pra não recriar a key no alterar
         self.key = ndb.Key(Usuario, self.organizador, GrupoDeTrabalho, self.sigla)
 

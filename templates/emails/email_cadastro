@@ -1,0 +1,9 @@
+{% extends '/emails/email_base' %}
+{% block corpo %}
+Olá,
+
+Seu cadastro no SISAA foi criado. Para confirmá-lo acesse o link abaixo:
+
+{{url_confirmacao_cadastro}}
+
+{% endblock %}

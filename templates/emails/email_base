@@ -1,0 +1,14 @@
+{# Este é o email base para que os outros extendam. #}
+
+{% autoescape true %}
+
+{% block corpo %}
+{% endblock %}
+
+{% block rodape %}
+------------------------------------------------------------------------
+Este é um e-mail automático, portanto, não responda.
+Assessoia da Universidade Federal do Rio Grande do Norte (UFRN)
+{% endblock %}
+
+{% endautoescape %}

@@ -10,13 +10,6 @@ from urls import url
 __all__ = ['AvaliacaoHandler']
 
 class AvaliacaoHandler(BaseHandler, webapp.RequestHandler):
-    
-    @requer_ava
-    def listar_minhas_avaliacoes(self):
-        avaliacoes = Avaliacao.query(Avaliacao.ava_key == self.usuario.key)
-        self.responder('listar_minhas_avaliacoes.html',
-                        {'avaliacoes' : avaliacoes})
-    
     @requer_ava
     def avaliar_get(self, key):
         #TODO: proibir que outro avaliador pegue o link e altere aqui

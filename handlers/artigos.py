@@ -37,13 +37,12 @@ class ArtigoHandler(BaseHandler, webapp.RequestHandler):
     def exibir(self, key):
         key = str(urllib.unquote(key))
         artigo = ndb.Key(urlsafe=key).get()
-        self.responder('artigo.html', {'artigo' : artigo})
+        if artigo:
+            self.responder('artigo.html', {'artigo' : artigo})
+        else:
+            self.erro_404()
     
     @requer_alu
-    def listar(self):
-        artigos = Artigo.query(Artigo.autor_email == self.usuario.email)
-        self.responder('listar_artigos.html', {'artigos' : artigos})
-    
     def menu(self):
         todos = Artigo.query()
         meus = []
