@@ -4,6 +4,7 @@ from webapp2_extras.security import hash_password
 import util, os, re
 from valores import *
 from validadores import *
+from emails import enviar_email
 
 class Usuario(ndb.Model):
     '''Usuário do sistema. Possui o email único e tem a senha gerada 
@@ -22,6 +23,10 @@ class Usuario(ndb.Model):
         
         if debug: # exibindo a senha somente na máquina local
             print self.senha
+        
+        if not Usuario.find_by_email(self.email):
+            enviar_email(para=self.email, assunto='Bem-vindo ao SISAA',
+                template='email_cadastro')
 
         # Caso o usuário possa alterar a senha, a variável criptografou_senha
         # deverá ser setada como False.
@@ -83,17 +88,7 @@ class GrupoDeTrabalho(ndb.Model):
     
     edital = ndb.BlobKeyProperty(required=True)
     
-    # : Data de início das submissões
-    ini_sub = ndb.DateProperty(required=True)
-    
-    # : Data de fim das submissões
-    fim_sub = ndb.DateProperty(required=True)
-    
-    # : Data de início das avaliações
-    ini_ava = ndb.DateProperty(required=True) 
-    
-    # : Data de fim das avaliações
-    fim_ava = ndb.DateProperty(required=True)
+    descricao = ndb.StringProperty(required=True)
     
     # : Indica a situação do gt (travado, aceitando submissões, etc)
     estado = ndb.StringProperty(default=travado, required=True)
@@ -101,14 +96,7 @@ class GrupoDeTrabalho(ndb.Model):
     # : Número de avaliadores por artigo
     n_ava_por_art = ndb.IntegerProperty(default=default_n_ava_por_art)
     
-<<<<<<< HEAD
     #TODO: refatorar para ndb.KeyProperty(kind=Usuario, repeated=True)
-=======
-<<<<<<< HEAD
-    #TODO: refatorar para ndb.KeyProperty(kind=Usuario, repeated=True)
-=======
->>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
->>>>>>> f65b671556c86dc894e530dbae207246647f465e
     avaliadores = ndb.StringProperty(repeated=True)
     
     @property
@@ -121,40 +109,27 @@ class GrupoDeTrabalho(ndb.Model):
     
     def _pre_put_hook(self):
         validar_gt(self)
-        
         antigo = GrupoDeTrabalho.find_by_sigla(self.sigla)
         if antigo: # Se alterar o edital, exclui o blob anterior
             if antigo.edital != self.edital:
                 blobstore.BlobInfo.get(antigo.edital).delete()
-        
         # Talvez seja melhor colocar um if aqui pra não recriar a key no alterar
         self.key = ndb.Key(Usuario, self.organizador, GrupoDeTrabalho, self.sigla)
 
     @classmethod
     def _pre_delete_hook(cls, key):
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-        #TODO: excluir dependências
-        #TODO: excluir edital
->>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
->>>>>>> f65b671556c86dc894e530dbae207246647f465e
         self = key.get()
         blobstore.BlobInfo.get(self.edital).delete() # Excluindo o edital
         artigos = Artigo.query(ancestor=ndb.Key(GrupoDeTrabalho,
                                self.sigla)).iter(keys_only=True)
         ndb.delete_multi(artigos)
 <<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-        #for a in artigos:
-        #    a.delete()
-        #TODO: excluir avaliações
->>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
->>>>>>> f65b671556c86dc894e530dbae207246647f465e
         
+=======
+
+
+#TODO: rever modelo daqui pra baixo
+>>>>>>> 7bfdb4908dc8114b7a9e335740ff14399f8e8bcd
 class Artigo(ndb.Model):
     '''Artigo enviado pelos alunos.'''
     titulo = ndb.StringProperty(required=True)
@@ -165,13 +140,10 @@ class Artigo(ndb.Model):
     versao_final = ndb.BlobKeyProperty()
     
     @property
-<<<<<<< HEAD
     def avaliacoes(self):
         return Avaliacao.query(Avaliacao.art_key == self.key)
     
     @property
-=======
->>>>>>> f65b671556c86dc894e530dbae207246647f465e
     def autor(self):
         return Usuario.find_by_email(self.autor_email)
     
@@ -190,39 +162,20 @@ class Artigo(ndb.Model):
     
     def _pre_put_hook(self):
         validar_artigo(self)
-        # Talvez seja melhor colocar um if aqui pra não recriar a key no alterar
-        # Colocar o autor na key faz com que o artigo seja substituído,
-        # caso o usuário envie outro artigo para o mesmo GT.
-        self.key = ndb.Key(GrupoDeTrabalho, self.sigla_gt, Artigo, self.autor_email)
+        self.key = ndb.Key(GrupoDeTrabalho, self.sigla_gt, Artigo,
+                           self.autor_email)
     
     @classmethod
     def _pre_delete_hook(cls, key):
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-        #TODO: excluir avaliações
->>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
->>>>>>> f65b671556c86dc894e530dbae207246647f465e
         self = key.get()
         # Excluindo os blobs
         if self.versao_final:
             blobstore.BlobInfo.get(self.versao_final).delete()
         if self.versao_inicial:
             blobstore.BlobInfo.get(self.versao_inicial).delete()
-<<<<<<< HEAD
         # excluindo as avaliações
         avaliacoes = Avaliacao.query(Avaliacao.art_key == self.key).iter(keys_only=True)
         ndb.delete_multi(avaliacoes)
-=======
-<<<<<<< HEAD
-        # excluindo as avaliações
-        avaliacoes = Avaliacao.query(Avaliacao.art_key == self.key).iter(keys_only=True)
-        ndb.delete_multi(avaliacoes)
-=======
-            
->>>>>>> 3ee4258fbfe43972e254245a78519405ce9668e1
->>>>>>> f65b671556c86dc894e530dbae207246647f465e
 
 class Avaliacao(ndb.Model):
     '''Guarda a avaliação feita no artigo.'''
@@ -230,19 +183,11 @@ class Avaliacao(ndb.Model):
     art_key = ndb.KeyProperty(required = True, kind = Artigo)
     comentarios = ndb.StringProperty(default='')
     nota = ndb.FloatProperty(default=0)
-<<<<<<< HEAD
     
     def _pre_put_hook(self):
         #TODO: validação
         pass
-    
-=======
-    
-    def _pre_put_hook(self):
-        #TODO: validação
-        pass
-    
->>>>>>> f65b671556c86dc894e530dbae207246647f465e
+
     @property
     def situacao(self):
         if self.nota:
@@ -258,3 +203,5 @@ class Avaliacao(ndb.Model):
     @property
     def artigo(self):
         return self.art_key.get()
+    
+    
